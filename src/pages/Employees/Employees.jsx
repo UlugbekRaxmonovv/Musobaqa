@@ -1,9 +1,12 @@
-import React from 'react'
+import React from "react";
+import EmployesComponents from "../../components/employes/employes-main";
 
 const Employees = () => {
   return (
-    <div>Employees</div>
-  )
-}
+    <div>
+      <EmployesComponents />
+    </div>
+  );
+};
 
-export default Employees
+export default Employees;
