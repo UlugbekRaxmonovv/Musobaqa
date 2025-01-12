@@ -1,48 +1,107 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { FaPlus } from "react-icons/fa6";
-import { Button, Input } from "antd";
-import { SearchOutlined } from "@ant-design/icons";
+import { CiEdit } from "react-icons/ci";
+import { RiDeleteBin7Line } from "react-icons/ri";
 
+import { Button, Input, Modal } from "antd";
+
+import { SearchOutlined } from "@ant-design/icons";
+import axios from "../../api/index";
 // import antd table
 import { Table } from "antd";
-const columns = [
-  {
-    title: "Name",
-    dataIndex: "name",
-  },
-  {
-    title: "Age",
-    dataIndex: "age",
-  },
-  {
-    title: "Address",
-    dataIndex: "address",
-  },
-];
-const data = [
-  {
-    key: "1",
-    name: "John Brown",
-    age: 32,
-    address: "New York No. 1 Lake Park",
-  },
-  {
-    key: "2",
-    name: "Jim Green",
-    age: 42,
-    address: "London No. 1 Lake Park",
-  },
-  {
-    key: "3",
-    name: "Joe Black",
-    age: 32,
-    address: "Sydney No. 1 Lake Park",
-  },
-];
+
+
 
 const BlockLanganar = () => {
+  const [data, setData] = useState([]);
+  const [error, setError] = useState(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const showModal = () => {
+    setIsModalOpen(true);
+  };
+  const handleOk = () => {
+    setIsModalOpen(false);
+  };
+  const handleCancel = () => {
+    setIsModalOpen(false);
+  };
+
+  const columns = [
+    {
+      title: "Ism-familiya",
+      dataIndex: "name",
+    },
+    {
+      title: "Turi",
+      dataIndex: "type",
+    },
+    {
+      title: "E-mail",
+      dataIndex: "email",
+    },
+    {
+      title: "",
+      dataIndex: "actions",
+      render: (_, record) => (
+        <div className="flex items-center gap-4">
+          <Button
+            className="bg-teal-500 hover:bg-teal-600 text-white"
+            icon={<CiEdit />}
+            onClick={showModal}
+          />
+          <Button
+            className="bg-red-500 hover:bg-red-600 text-white"
+            icon={<RiDeleteBin7Line />}
+          />
+        </div>
+      ),
+    },
+  ];
+
+
+
+  useEffect(() => {
+    const fetchTasks = async () => {
+      const token = localStorage.getItem("x-auth-token");
+      if (!token) {
+        console.error("Token topilmadi! Iltimos, tizimga qayta kiring.");
+        return;
+      }
+
+      try {
+        const response = await axios.get("/managers", {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        setData(response.data);
+      } catch (err) {
+        console.error("Xatolik yuz berdi:", err);
+        setError(err.response?.data || "Xatolik");
+      }
+    };
+
+    fetchTasks();
+  }, []);
+
+  console.log(data);
+
   return (
     <div className="">
+      {/* Modal*/}
+      <Modal
+        title="Basic Modal"
+        open={isModalOpen}
+        onOk={handleOk}
+        onCancel={handleCancel}
+      >
+        <p>Some contents...</p>
+        <p>Some contents...</p>
+        <p>Some contents...</p>
+      </Modal>
+      {/* Modal*/}
+
       <div className="blocked-users  flex flex-col gap-[20px] py-8 px-2">
         <Button
           type="primary"
@@ -59,7 +118,12 @@ const BlockLanganar = () => {
         />
 
         <div className="table">
-          <Table columns={columns} dataSource={data} size="middle" />
+          <Table
+            className=""
+            columns={columns}
+            dataSource={data}
+            size="middle"
+          />
         </div>
       </div>
     </div>
