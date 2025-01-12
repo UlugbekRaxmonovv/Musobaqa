@@ -77,21 +77,24 @@ const General = () => {
             okText="Saqlash"
             cancelText="Bekor qilish"
           >
-           {
-            data?.map((item) =>(
-              <>
-              <div className="">
-                <Input type="checkbox" />
-                <li>{item.name}</li>
-              </div>
-              </>
-            ))
-           }
+          {
+  data?.map((item) => (
+    <div 
+      key={item.id} 
+      className="flex items-center justify-between p-3 bg-white rounded-lg shadow-md hover:bg-gray-100 transition duration-300 mb-2"
+    >
+      <li className="text-lg font-semibold text-gray-800 list-none">{item.name}</li>
+      <Input 
+        type="checkbox" 
+        className="w-5 h-5 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
+      />
+    </div>
+  ))
+}
           </Modal>
         </div>
 
-        {/* Xatolikni ko'rsatish */}
-        {error && <div className="text-red-500 mt-4">Xatolik: {error}</div>}
+      
       </div>
     </div>
   );
