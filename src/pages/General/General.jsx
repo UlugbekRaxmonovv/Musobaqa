@@ -1,9 +1,7 @@
-import React from 'react'
+import React from "react";
 
-const General = () => {
-  return (
-    <div>General</div>
-  )
+function General() {
+  return <div>General</div>;
 }
 
-export default General
+export default General;
