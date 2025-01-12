@@ -5,9 +5,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import DashboardContent from '../../../components/content/Content'; 
 import { BsCart } from 'react-icons/bs';
 import { FiMenu } from 'react-icons/fi';
-import { RiSunLine } from 'react-icons/ri';
-const { Header, Content, Sider } = Layout;
-import { RiMoonLine } from "react-icons/ri";
+const { Header, Sider } = Layout;
 import logo from  '../../../assets/images/logo.png'
 
 function getItem(label, key, icon, onClick) {
@@ -69,31 +67,31 @@ const Manager = () => {
 
   const items = [
     getItem(
-      'general',
+      'General',
       '1',
       <BarChartOutlined style={{ color: 'black', fontSize: '18px' }} />,
       () => { navigate('/dashboard/general'); setCollapsed(true); }
     ),
     getItem(
-      'tasks',
+      'Tasks',
       '2',
       <UserOutlined style={{ color: 'black', fontSize: '18px' }} />,
       () => { navigate('/dashboard/tasks'); setCollapsed(!collapsed); }
     ),
     getItem(
-      'employees',
+      'Employees',
       '3',
       <BsCart style={{ color: 'black', fontSize: '18px' }} />,
       () => { navigate('/dashboard/employees'); setCollapsed(!collapsed); }
     ),
     getItem(
-      'blockLanganar',
+      'BlockLanganar',
       '4',
       <CarOutlined style={{ color: 'black', fontSize: '18px' }} />,
       () => { navigate('/dashboard/blockLanganar'); setCollapsed(!collapsed); }
     ),
     getItem(
-      'managers',
+      'Managers',
       '5',
       <CarryOutOutlined style={{ color:  'black', fontSize: '18px' }} />,
       () => { navigate('/dashboard/managers'); setCollapsed(!collapsed); }
@@ -144,37 +142,44 @@ const Manager = () => {
   return (
     <>
       <Layout className=" bg-[#F4F1EC]">
-        <Sider
-          onCollapse={(value) => setCollapsed(value)}
-          style={sidebarStyle}
-          ref={sidebarRef}
-          className="bg-gray-700"
-        >
-          <div className="flex justify-center items-center">
-          <Link to="/dashboard/managers" className='cursor-pointer'><img src={logo} alt="" className="w-[150px] h-[150px] -mt-10 object-contain   rounded-full text-white" /></Link >
-          </div>
-          <Menu
-            selectedKeys={[getSelectedKey()]}
-            theme="white"
-            defaultSelectedKeys={[getSelectedKey()]}
-            mode="inline"
-            items={items.map(item => ({
-              ...item,
-              label: (
-                <div
-                  className="text-black  text-[14px] font-poppins"
-                >
-                  {item.label}
-                </div>
-              )
-            }))}
-          />
-        </Sider>
+      <Sider
+  onCollapse={(value) => setCollapsed(value)}
+  style={{
+    ...sidebarStyle,
+    backgroundColor: 'white', // Set the background to white
+  }}
+  ref={sidebarRef}
+  className="shadow-md" // Optional: Add a shadow for better separation
+>
+  <div className="flex justify-center items-center">
+    <Link to="/dashboard/managers" className="cursor-pointer">
+      <img
+        src={logo}
+        alt=""
+        className="w-[150px] h-[150px] -mt-10 object-contain rounded-full"
+      />
+    </Link>
+  </div>
+  <Menu
+    selectedKeys={[getSelectedKey()]}
+    theme="menu"
+    defaultSelectedKeys={[getSelectedKey()]}
+    mode="inline"
+    items={items.map((item) => ({
+      ...item,
+      label: (
+        <div className="text-black text-[14px] font-poppins">
+          {item.label}
+        </div>
+      ),
+    }))}
+  />
+</Sider>
+
         <Layout>
-          <Header className= 'bg-[#1f2937] border-b-[1px] border-gray-700 px-4'>
+          <Header className= 'bg-white border-b-[1px] border-gray-100 px-4'>
             <div className="flex justify-between items-center">
               <div className="flex items-center gap-2">
-
                 <div className={`bg-gray-700' cursor-pointer p-2 rounded-md   transition-colors`} onClick={() => setCollapsed(!collapsed)}>
                   <FiMenu className={`text-black text-xl font-bold cursor-pointer`} />
                 </div>
