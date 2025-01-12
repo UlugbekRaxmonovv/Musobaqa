@@ -130,16 +130,6 @@ const Manager = () => {
       key: '1',
       label: (
         <div className="flex items-center flex-col">
-          <span className="text-sm">
-            {/* {user?.fullname} */}
-          </span>
-        </div>
-      ),
-    },
-    {
-      key: '2',
-      label: (
-        <div className="flex items-center flex-col">
           <span className="text-sm" onClick={logout}>
             Logout
           </span>
@@ -179,7 +169,7 @@ const Manager = () => {
   className="shadow-md" 
 >
   <div className="flex justify-center items-center">
-    <Link to="/dashboard/managers" className="cursor-pointer">
+    <Link to="/dashboard/general" className="cursor-pointer">
       <img
         src={logo}
         alt=""

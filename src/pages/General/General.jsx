@@ -55,11 +55,15 @@ const General = () => {
           <div className="mt-4">
             <h3 className="text-lg font-medium text-gray-700 mb-2">Hunarlari tasks</h3>
             <ul className="list-decimal list-inside text-gray-600">
-              <li>ishdan bo'shatish</li>
-              <li>boshliqqa qarshi chiqish</li>
-              <li>uy vazifa bajarmaslik</li>
-              <li>hodim olish</li>
-              <li>product holatini tekshirish</li>
+              {
+                data.map((item) =>(
+                  <>
+                    <li>{item.name}</li>
+                  </>
+                ))
+              }
+            
+             
             </ul>
           </div>
 
