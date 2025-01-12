@@ -1,12 +1,19 @@
 import React, { useState, useEffect, useRef, useContext } from 'react';
 import { BarChartOutlined, CarFilled, CarOutlined, CarryOutOutlined, SettingOutlined, UserOutlined } from '@ant-design/icons';
-import { Avatar, Layout, Menu, Dropdown, Space, Switch, Modal, Popover } from 'antd';
+import { Avatar, Layout, Menu, Dropdown, Space} from 'antd';
 import { Link, useNavigate } from 'react-router-dom';
 import DashboardContent from '../../../components/content/Content'; 
 import { BsCart } from 'react-icons/bs';
 import { FiMenu } from 'react-icons/fi';
 const { Header, Sider } = Layout;
 import logo from  '../../../assets/images/logo.png'
+import { VscTasklist } from 'react-icons/vsc';
+import { MdAddTask, MdOutlineAddTask } from 'react-icons/md';
+import { IoMdCheckboxOutline } from 'react-icons/io';
+import { TbUsersPlus } from 'react-icons/tb';
+import { LuLayoutDashboard } from 'react-icons/lu';
+import { HiOutlineUsers } from 'react-icons/hi';
+import axios from '../../../api/index';
 
 function getItem(label, key, icon, onClick) {
   return {
@@ -24,7 +31,24 @@ const Manager = () => {
   const navigate = useNavigate();
   const sidebarRef = useRef(null);
   const [user, setUser] = useState(null);
-  const [open, setOpen] = useState(false);
+  let token = localStorage.getItem("x-auth-token")
+     useEffect(() =>{
+     axios
+     .get('/users',{
+      headers: {
+        Authorization: `Bearer ${token}`,
+      }
+     })
+     .then((res) =>{
+      console.log(res);
+      
+     })
+     .catch((error) =>{
+      console.log(error);
+      
+     })
+   },[])
+
   const logout = () => {
     localStorage.removeItem('x-auth-token');
     navigate('/signin');
@@ -69,33 +93,36 @@ const Manager = () => {
     getItem(
       'General',
       '1',
-      <BarChartOutlined style={{ color: 'black', fontSize: '18px' }} />,
+      <LuLayoutDashboard  style={{ color: 'black', fontSize: '18px' }} />,
       () => { navigate('/dashboard/general'); setCollapsed(true); }
-    ),
-    getItem(
-      'Tasks',
-      '2',
-      <UserOutlined style={{ color: 'black', fontSize: '18px' }} />,
-      () => { navigate('/dashboard/tasks'); setCollapsed(!collapsed); }
-    ),
-    getItem(
-      'Employees',
-      '3',
-      <BsCart style={{ color: 'black', fontSize: '18px' }} />,
-      () => { navigate('/dashboard/employees'); setCollapsed(!collapsed); }
     ),
     getItem(
       'BlockLanganar',
       '4',
-      <CarOutlined style={{ color: 'black', fontSize: '18px' }} />,
+      <IoMdCheckboxOutline   style={{ color: 'black', fontSize: '18px' }} />,
       () => { navigate('/dashboard/blockLanganar'); setCollapsed(!collapsed); }
     ),
     getItem(
       'Managers',
       '5',
-      <CarryOutOutlined style={{ color:  'black', fontSize: '18px' }} />,
+      <HiOutlineUsers  style={{ color:  'black', fontSize: '18px' }} />,
       () => { navigate('/dashboard/managers'); setCollapsed(!collapsed); }
+    ),
+   
+    getItem(
+      'Employees',
+      '3',
+      <TbUsersPlus  style={{ color: 'black', fontSize: '18px' }} />,
+      () => { navigate('/dashboard/employees'); setCollapsed(!collapsed); }
+    ),
+    getItem(
+      'Tasks',
+      '2',
+      <MdOutlineAddTask  style={{ color: 'black', fontSize: '18px' }} />,
+      () => { navigate('/dashboard/tasks'); setCollapsed(!collapsed); }
     )
+   
+    
   ];
 
   const userMenuItems = [
@@ -146,10 +173,10 @@ const Manager = () => {
   onCollapse={(value) => setCollapsed(value)}
   style={{
     ...sidebarStyle,
-    backgroundColor: 'white', // Set the background to white
+    backgroundColor: 'white',
   }}
   ref={sidebarRef}
-  className="shadow-md" // Optional: Add a shadow for better separation
+  className="shadow-md" 
 >
   <div className="flex justify-center items-center">
     <Link to="/dashboard/managers" className="cursor-pointer">

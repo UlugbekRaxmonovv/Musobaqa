@@ -3,7 +3,7 @@ import { Button, Form, Input } from "antd";
 import { Link, useNavigate } from "react-router-dom";
 import { LockOutlined } from "@ant-design/icons";
 import toast from "react-hot-toast";
-import axios from "axios";
+import axios from "../../api/index";
 
 
 const Login = () => {
@@ -13,7 +13,7 @@ const Login = () => {
   const onFinish = async (values) => {
     setLoading(true);
     try {
-      const response = await axios.post("http://localhost:3000/login", {
+      const response = await axios.post("/login", {
         email: values.email,
         password: values.password,
       });
@@ -22,7 +22,7 @@ const Login = () => {
         localStorage.setItem("x-auth-token",response.data?.accessToken )
         toast.success("Muvaffaqiyatli kirildi");
         console.log(response.data?.accessToken);
-        navigate("/dashboard/managers");
+        navigate("/dashboard/general");
       } else {
         toast.error("Login yoki parol notog'ri");
       }
