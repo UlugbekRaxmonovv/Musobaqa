@@ -61,7 +61,7 @@ const EmployeesComponents = () => {
 
   return (
     <div className="">
-      <div className=" flex flex-col gap-[20px] py-8 px-2">
+      <div className=" flex items-center justify-between py-8 px-2">
         <Button
           onClick={toggleModal}
           type="primary"
@@ -72,7 +72,7 @@ const EmployeesComponents = () => {
         </Button>
         <Input
           type="search"
-          className="w-[30%] h-[40px]"
+          className="border border-gray-300 rounded-md px-4 py-2 w-full sm:w-64"
           placeholder="Поиск по фамилии"
           prefix={<SearchOutlined />}
         />
@@ -170,4 +170,3 @@ const EmployeesComponents = () => {
 };
 
 export default EmployeesComponents;
-
