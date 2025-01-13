@@ -9,16 +9,21 @@ const { Option } = Select;
 
 const Managers = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [modalType, setModalType] = useState('');
   const [tasks, setTasks] = useState([]);
   const [data, setData] = useState([]);
-  const [taskName, setTaskName] = useState('');
   const [taskType, setTaskType] = useState('');
-  const [email,setEmail] = useState('')
   const [status,setStatus] = useState("")
-  const [editTaskId, setEditTaskId] = useState(null);
   const [search, setSearch] = useState("");
+  const [taskName, setTaskName] = useState('');
+const [email, setEmail] = useState('');
+const [lastName, setLastName] = useState('');
+const [role, setRole] = useState('');
+const [currentStatus, setCurrentStatus] = useState(null);
+const [editTaskId, setEditTaskId] = useState(null);
+const [modalType, setModalType] = useState('add'); 
 
+  const [isStatusModalOpen, setIsStatusModalOpen] = useState(false);
+  const [currentManagerId, setCurrentManagerId] = useState(null);
   useEffect(() => {
     const fetchTasks = async () => {
       const token = localStorage.getItem('x-auth-token');
@@ -52,12 +57,28 @@ const Managers = () => {
 
   const handleEditTask = (id) => {
     const taskToEdit = data.find((task) => task.id === id);
-    setModalType('edit');
-    setEditTaskId(id);
-    setTaskName(taskToEdit.name);
-    setTaskType(taskToEdit.type);
-    setIsModalOpen(true);
+    if (taskToEdit) {
+      setTaskName(taskToEdit.name);
+      setEmail(taskToEdit.email);
+      setLastName(taskToEdit.last_name);
+      setRole(taskToEdit.role);
+      setCurrentStatus(taskToEdit.status);
+      setEditTaskId(id);
+      setModalType('edit');
+      setIsModalOpen(true);
+    }
   };
+  
+
+  const resetForm = () => {
+    setTaskName('');
+    setEmail('');
+    setLastName('');
+    setRole('');
+    setCurrentStatus(null);
+    setEditTaskId(null);
+  };
+  
 
   const handleDeleteTask = (id) => {
     Modal.confirm({
@@ -66,7 +87,7 @@ const Managers = () => {
       onOk: async () => {
         try {
           const token = localStorage.getItem('x-auth-token');
-          await axios.delete(`/tasks/${id}`, {
+          await axios.delete(`/managers/${id}`, {
             headers: {
               Authorization: `Bearer ${token}`,
             },
@@ -86,43 +107,62 @@ const Managers = () => {
 
   const handleModalOk = async () => {
     const token = localStorage.getItem('x-auth-token');
-    if (!taskName || !taskType) {
+    
+    if (!taskName || !email || !lastName || !role || currentStatus === null) {
       message.warning('Iltimos, barcha maydonlarni to\'ldiring!');
       return;
     }
-
+  
     try {
       if (modalType === 'add') {
         const response = await axios.post(
-          '/tasks',
-          { name: taskName, type: taskType },
+          '/managers',
+          {
+            name: taskName,
+            email,
+            last_name: lastName,
+            type: role,
+            isActive: currentStatus,
+          },
           {
             headers: {
               Authorization: `Bearer ${token}`,
             },
           }
         );
-        setData([...data, response.data]);
+        setData((prevData) => [...prevData, response.data]);
         message.success('Vazifa qo\'shildi!');
       } else if (modalType === 'edit') {
         const response = await axios.patch(
-          `/managers/${editTaskId}`,
-          {isActive:status  },
+          `/managers/${editTaskId}`, // PATCH uchun to'g'ri endpoint
+          {
+            name: taskName,
+            email,
+            last_name: lastName,
+            type: role,
+            isActive: currentStatus,
+          },
           {
             headers: {
               Authorization: `Bearer ${token}`,
             },
           }
         );
-        setData(data.map((task) => (task.id === editTaskId ? response.data : task)));
+        setData((prevData) =>
+          prevData.map((task) =>
+            task.id === editTaskId ? response.data : task
+          )
+        );
         message.success('Vazifa yangilandi!');
       }
       setIsModalOpen(false);
+      resetForm();
     } catch (err) {
-      console.error('Saqlashda xatolik:', err);
+      console.error('Xatolik yuz berdi:', err);
       message.error('Xatolik yuz berdi.');
     }
   };
+  
 
   const handleModalCancel = () => {
     setIsModalOpen(false);
@@ -169,9 +209,14 @@ const Managers = () => {
       title: 'Status',
       dataIndex: 'isActive',
       key: 'isActive',
-      render: (text) =>  <span className="font-medium text-gray-700">
-      {text ? 'Active' : 'Inactive'}
-    </span>
+      render: (text, record) => (
+        <span
+          onClick={() => handleStatusModalOpen(record)}
+          className={`font-medium text-white cursor-pointer px-2 py-1 rounded ${text ? 'bg-green-500' : 'bg-red-500'}`}
+        >
+          {text ? 'Active' : 'Inactive'}
+        </span>
+      ),
     },
     {
       title: 'Amallar',
@@ -192,6 +237,33 @@ const Managers = () => {
       ),
     },
   ];
+
+   const handleStatusModalOpen = (manager) => {
+    setCurrentManagerId(manager.id);
+    setCurrentStatus(manager.isActive);
+    setIsStatusModalOpen(true);
+  };
+
+  const handleStatusUpdate = async () => {
+    const token = localStorage.getItem('x-auth-token');
+    try {
+      await axios.patch(`/managers/${currentManagerId}`, { isActive: currentStatus }, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      setData((prevData) =>
+        prevData.map((item) =>
+          item.id === currentManagerId ? { ...item, isActive: currentStatus } : item
+        )
+      );
+      message.success('Status muvaffaqiyatli yangilandi!');
+      setIsStatusModalOpen(false);
+    } catch (err) {
+      console.error('Status yangilashda xatolik:', err);
+      message.error('Status yangilashda xatolik yuz berdi.');
+    }
+  };
 
   return (
     <div className="py-8 px-2 max-w-full">
@@ -217,26 +289,109 @@ const Managers = () => {
         dataSource={data.filter((item) => item.name.toLowerCase().includes(search.toLowerCase()))}
         rowKey="id"
         pagination={false}
+        scroll={{
+          x: 'max-content', 
+          y: '60vh',          
+        }}
+        style={{ width: "100%", whiteSpace: "nowrap", cursor: "pointer" }}
       />
+<Modal
+  title={modalType === 'add' ? "Add Task" : "Edit Task"}
+  open={isModalOpen}
+  onOk={handleModalOk}
+  onCancel={handleModalCancel}
+  className="max-w-sm w-full"
+>
+  <div className="space-y-4">
+    <div>
+      <label htmlFor="taskName" className="block text-sm font-medium text-gray-700">
+        Task Name
+      </label>
+      <Input
+        id="taskName"
+        placeholder="Enter task name"
+        value={taskName}
+        onChange={(e) => setTaskName(e.target.value)}
+        className="border border-gray-300 rounded-md mt-1"
+      />
+    </div>
+    <div>
+      <label htmlFor="email" className="block text-sm font-medium text-gray-700">
+        Email
+      </label>
+      <Input
+        id="email"
+        placeholder="Enter email"
+        value={email}
+        onChange={(e) => setEmail(e.target.value)}
+        className="border border-gray-300 rounded-md mt-1"
+      />
+    </div>
+    <div>
+      <label htmlFor="lastName" className="block text-sm font-medium text-gray-700">
+        Last Name
+      </label>
+      <Input
+        id="lastName"
+        placeholder="Enter last name"
+        value={lastName}
+        onChange={(e) => setLastName(e.target.value)}
+        className="border border-gray-300 rounded-md mt-1"
+      />
+    </div>
+    <div>
+      <label htmlFor="role" className="block text-sm font-medium text-gray-700">
+        Role
+      </label>
+      <Input
+        id="role"
+        placeholder="Enter role"
+        value={role}
+        onChange={(e) => setRole(e.target.value)}
+        className="border border-gray-300 rounded-md mt-1"
+      />
+    </div>
+    {
+      modalType === "add" ? <div>
+      <label htmlFor="status" className="block text-sm font-medium text-gray-700">
+        Status
+      </label>
+      <Select
+        id="status"
+        placeholder="Select status"
+        value={currentStatus}
+        onChange={(value) => setCurrentStatus(value)}
+        className="w-full mt-1"
+      >
+        <Option value={true}>Active</Option>
+        <Option value={false}>Inactive</Option>
+      </Select>
+    </div>
+    :
+    ""
+    }
+    
+  </div>
+</Modal>
 
-      <Modal
-        title={modalType === 'add' ? "Vazifa qo'shish" : "Vazifani o'zgartirish"}
-        open={isModalOpen}
-        onOk={handleModalOk}
-        onCancel={handleModalCancel}
+
+
+        <Modal
+        title="Statusni o'zgartirish"
+        open={isStatusModalOpen}
+        onOk={handleStatusUpdate}
+        onCancel={() => setIsStatusModalOpen(false)}
         className="max-w-sm w-full"
       >
-        <div className="space-y-4">
-          <Select
-            placeholder="Status"
-            value={status}
-            onChange={(value) => setStatus(value)}
-            className="w-full"
-          >
-            <Option value={true}>Active</Option>
-            <Option value={false}>Inactive</Option>
-          </Select>
-        </div>
+        <Select
+          placeholder="Status"
+          value={currentStatus}
+          onChange={(value) => setCurrentStatus(value)}
+          className="w-full"
+        >
+          <Option value={true}>Active</Option>
+          <Option value={false}>Inactive</Option>
+        </Select>
       </Modal>
     </div>
   );
