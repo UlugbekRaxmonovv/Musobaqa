@@ -28,7 +28,7 @@ const Managers = () => {
   const [pageSize] = useState(5);
   const [totalOrders, setTotalOrders] = useState(0);
   const [search, setSearch] = useState("");
-  
+
   const { theme } = useContext(Context);
 
   useEffect(() => {
@@ -50,7 +50,6 @@ const Managers = () => {
         });
         setData(response.data);
         setTotalOrders(response.headers["x-total-count"]); // Assuming the total count is returned in headers
-  
       } catch (err) {
         console.error("Xatolik yuz berdi:", err);
         message.error(err.response?.data || "Xatolik");
@@ -304,10 +303,10 @@ const Managers = () => {
 
   return (
     <div
-    className={`${theme ? "bg-gray-900" : "bg-[rgb(244,241,236)]"} 
+      className={`${theme ? "bg-gray-900" : "bg-[rgb(244,241,236)]"} 
           p-4 min-h-[100%] transition-all 
           rounded-lg`}
-  >
+    >
       <div className="flex flex-col sm:flex-row justify-between gap-4 items-center mb-4">
         <Button
           type="primary"
@@ -325,19 +324,14 @@ const Managers = () => {
         />
       </div>
 
-      <Table
-      columns={columns}
-      dataSource={data}
-      pagination={false}
-    />
-    <Pagination
-  className="flex justify-center items-center mt-2"
-  pageSize={pageSize}
-  total={totalOrders}
-  current={page}
-  onChange={(newPage) => setPage(newPage)} 
-
-    />
+      <Table columns={columns} dataSource={data} pagination={false} />
+      <Pagination
+        className="flex justify-center items-center mt-2"
+        pageSize={pageSize}
+        total={totalOrders}
+        current={page}
+        onChange={(newPage) => setPage(newPage)}
+      />
       <Modal
         title={modalType === "add" ? "Add Manager" : "Edit Manager"}
         open={isModalOpen}

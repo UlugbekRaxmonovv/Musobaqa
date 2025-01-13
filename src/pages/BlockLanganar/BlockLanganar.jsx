@@ -3,7 +3,7 @@ import { FaPlus } from "react-icons/fa6";
 import { CiEdit } from "react-icons/ci";
 import { RiDeleteBin7Line } from "react-icons/ri";
 
-import { Button, Input, Modal } from "antd";
+import { Button, Input, Modal, Pagination } from "antd";
 import { SearchOutlined } from "@ant-design/icons";
 import axios from "../../api/index";
 import { Table, Dropdown } from "antd";
@@ -12,6 +12,9 @@ const BlockLanganar = () => {
   const [data, setData] = useState([]);
   const [searchValue, setSearchValue] = useState("");
   const [filteredData, setFilteredData] = useState([]);
+  const [page, setPage] = useState(1);
+  const [pageSize] = useState(5);
+  const [totalOrders, setTotalOrders] = useState(0);
 
   const unblock = async (id) => {
     if (!id) return;
@@ -190,6 +193,15 @@ const BlockLanganar = () => {
           dataSource={filteredData}
           rowKey="id"
           size="middle"
+          pagination={false}
+        />
+
+        <Pagination
+          className="flex justify-center items-center mt-2"
+          pageSize={pageSize}
+          total={totalOrders}
+          current={page}
+          onChange={(newPage) => setPage(newPage)}
         />
       </div>
     </div>
