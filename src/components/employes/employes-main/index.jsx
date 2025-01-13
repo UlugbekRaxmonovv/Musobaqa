@@ -75,6 +75,15 @@ const EmployesComponents = () => {
               placeholder="Email"
             />
           </div>
+
+          <select
+            className="w-[50%] h-[30px] rounded-md my-2 border-[1px] border-gray-300 text-gray-600 outline-none "
+            name="role"
+            id="role"
+          >
+            <option value="managers">Active</option>
+            <option value="employees">Not Active</option>
+          </select>
         </div>
       </Modal>
       <TableComponents />
