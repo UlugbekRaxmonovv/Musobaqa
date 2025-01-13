@@ -193,7 +193,13 @@ const Tasks = () => {
         columns={columns}
         dataSource={data.filter((item) => item.name.toLowerCase().includes(search.toLowerCase()))}
         rowKey="id"
-        pagination={false}
+        pagination={true}
+        style={{
+          height:"65vh",
+          overflowX: "scroll"
+        }}
+      
+        
       />
 
       <Modal

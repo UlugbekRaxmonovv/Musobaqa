@@ -5,11 +5,11 @@ import axios from "../../api/index";
 const General = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [data, setData] = useState([]);
-  const [error, setError] = useState(null); 
+  const [error, setError] = useState(null);
 
   useEffect(() => {
     const fetchTasks = async () => {
-      const token = localStorage.getItem("x-auth-token"); 
+      const token = localStorage.getItem("x-auth-token");
       if (!token) {
         console.error("Token topilmadi! Iltimos, tizimga qayta kiring.");
         return;
@@ -18,12 +18,11 @@ const General = () => {
       try {
         const response = await axios.get("/tasks", {
           headers: {
-            Authorization: `Bearer ${token}`, 
+            Authorization: `Bearer ${token}`,
           },
         });
 
-        
-        setData(response.data); 
+        setData(response.data);
       } catch (err) {
         console.error("Xatolik yuz berdi:", err);
         setError(err.response?.data || "Xatolik");
@@ -49,11 +48,15 @@ const General = () => {
     <div className="py-8 px-2">
       <div className="max-w-md bg-white shadow-lg rounded-lg overflow-hidden sm:max-w-xl">
         <div className="px-6 py-4">
-          <h2 className="text-xl font-semibold text-gray-800">Manager G’aybulla</h2>
+          <h2 className="text-xl font-semibold text-gray-800">
+            Manager G’aybulla
+          </h2>
           <p className="text-gray-500">G’aybulla o'g'li</p>
 
           <div className="mt-4">
-            <h3 className="text-lg font-medium text-gray-700 mb-2">Hunarlari tasks</h3>
+            <h3 className="text-lg font-medium text-gray-700 mb-2">
+              Hunarlari tasks
+            </h3>
             <ul className="list-decimal list-inside text-gray-600">
               {
                 data.map((item) =>(
