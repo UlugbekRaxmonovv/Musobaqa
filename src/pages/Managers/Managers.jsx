@@ -25,7 +25,7 @@ const Managers = () => {
   const [isStatusModalOpen, setIsStatusModalOpen] = useState(false);
   const [currentManagerId, setCurrentManagerId] = useState(null);
   const [page, setPage] = useState(1);
-  const [pageSize] = useState(1);
+  const [pageSize] = useState(5);
   const [totalOrders, setTotalOrders] = useState(0);
   const [search, setSearch] = useState("");
   
