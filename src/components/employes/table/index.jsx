@@ -1,5 +1,13 @@
 import React, { useContext, useEffect, useState } from "react";
-import { Button, Table, notification, Modal, Input, Select } from "antd";
+import {
+  Button,
+  Table,
+  notification,
+  Modal,
+  Input,
+  Select,
+  Pagination,
+} from "antd";
 import axios from "../../../api";
 import { CiEdit } from "react-icons/ci";
 import { RiDeleteBin7Line } from "react-icons/ri";
@@ -11,6 +19,9 @@ const TableComponents = ({ reflesh, searchdata }) => {
   const [editingEmployee, setEditingEmployee] = useState(null);
   const [isModalVisible, setIsModalVisible] = useState(false);
   const { theme } = useContext(Context);
+  const [page, setPage] = useState(1);
+  const [pageSize] = useState(5);
+  const [totalOrders, setTotalOrders] = useState(0);
   const [editedEmployeeData, setEditedEmployeeData] = useState({
     name: "",
     email: "",
@@ -199,9 +210,22 @@ const TableComponents = ({ reflesh, searchdata }) => {
 
   return (
     <div className="">
-      <Table columns={columns} dataSource={data} rowKey="id"   pagination={true}
+      <Table
+        columns={columns}
+        dataSource={data}
+        rowKey="id"
+        pagination={false}
         className={theme ? "custom-table theme" : "custom-table"}
-        rowClassName={() => (theme ? "dark-row" : "light-row")}/>
+        rowClassName={() => (theme ? "dark-row" : "light-row")}
+      />
+
+      <Pagination
+        className="flex justify-center items-center mt-2"
+        pageSize={pageSize}
+        total={totalOrders}
+        current={page}
+        onChange={(newPage) => setPage(newPage)}
+      />
 
       <Modal
         title="Xodimni tahrirlash"
