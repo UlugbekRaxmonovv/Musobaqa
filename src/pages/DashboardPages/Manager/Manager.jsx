@@ -17,6 +17,7 @@ import { HiOutlineUsers } from 'react-icons/hi';
 import axios from '../../../api/index';
 import { RiMoonLine, RiSunLine } from 'react-icons/ri';
 import { Context } from '../../../components/darkMode/Context';
+import { TfiStatsUp } from 'react-icons/tfi';
 
 function getItem(label, key, icon, onClick) {
   return {
@@ -95,6 +96,14 @@ const Manager = () => {
   };
 
   const items = [
+    getItem(
+      'Statestika',
+      '1',
+      <TfiStatsUp
+      style={{ color: theme ? 'white' : 'black', fontSize: '18px' }}  />,
+      () => { navigate('/dashboard/statestika'); setCollapsed(!collapsed); }
+     
+    ),
     getItem(
       'General',
       '1',
@@ -184,7 +193,7 @@ const Manager = () => {
   className={`${theme ? 'bg-[#1f2937] border-gray-700' : 'bg-[rgb(244,241,236)]  '} border-gray-100 border-r-[1px]`} 
 >
   <div className="flex justify-center items-center">
-    <Link to="/dashboard/managers" className="cursor-pointer">
+    <Link to="/dashboard/status" className="cursor-pointer">
     {
       theme ?   <img
       src={logo1}
