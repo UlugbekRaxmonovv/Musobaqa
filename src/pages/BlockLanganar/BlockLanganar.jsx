@@ -63,6 +63,8 @@ const BlockLanganar = () => {
     }
   };
 
+  
+
   const items = (id) => [
     {
       key: "1",
@@ -171,7 +173,6 @@ const BlockLanganar = () => {
 
   return (
     <div className="blocked-users flex flex-col gap-[20px] py-8 px-2">
-
 
       <Input
         className="w-[30%] h-[40px]"
