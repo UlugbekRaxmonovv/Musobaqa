@@ -4,6 +4,7 @@ import axios from '../../api/index';
 import { CiEdit } from 'react-icons/ci';
 import { RiDeleteBin7Line } from 'react-icons/ri';
 import { FaPlus } from 'react-icons/fa6';
+import { Link } from 'react-router-dom';
 
 const { Option } = Select;
 
@@ -15,13 +16,12 @@ const Managers = () => {
   const [status,setStatus] = useState("")
   const [search, setSearch] = useState("");
   const [taskName, setTaskName] = useState('');
-const [email, setEmail] = useState('');
-const [lastName, setLastName] = useState('');
-const [role, setRole] = useState('');
-const [currentStatus, setCurrentStatus] = useState(null);
-const [editTaskId, setEditTaskId] = useState(null);
-const [modalType, setModalType] = useState('add'); 
-
+  const [email, setEmail] = useState('');
+  const [lastName, setLastName] = useState('');
+  const [role, setRole] = useState('');
+  const [currentStatus, setCurrentStatus] = useState(null);
+  const [editTaskId, setEditTaskId] = useState(null);
+  const [modalType, setModalType] = useState('add'); 
   const [isStatusModalOpen, setIsStatusModalOpen] = useState(false);
   const [currentManagerId, setCurrentManagerId] = useState(null);
   useEffect(() => {
@@ -123,6 +123,7 @@ const [modalType, setModalType] = useState('add');
             last_name: lastName,
             type: role,
             isActive: currentStatus,
+            tasks:[]
           },
           {
             headers: {
@@ -134,7 +135,7 @@ const [modalType, setModalType] = useState('add');
         message.success('Vazifa qo\'shildi!');
       } else if (modalType === 'edit') {
         const response = await axios.patch(
-          `/managers/${editTaskId}`, // PATCH uchun to'g'ri endpoint
+          `/managers/${editTaskId}`, 
           {
             name: taskName,
             email,
@@ -175,47 +176,54 @@ const [modalType, setModalType] = useState('add');
           {"№"}
         </div >,
       width: 20,
-      render: (_, __, index) =>
-        <div className="text-center">
+      render: (_, record, index) =>
+       <>
+       <Link to={`/dashboard/general/${record.id}`}>
+       <div className="text-center w-full">
           {index + 1}
-        </div>
+        </div></Link>
+       
+       </>
     },
     {
       title: 'Name',
       dataIndex: 'name',
       key: 'name',
-      render: (text) => <span className="font-medium text-gray-700">{text}</span>,
+      render: (text,record) => <><Link to={`/dashboard/general/${record.id}`}><span className="font-medium w-full text-gray-700">{text}</span></Link></>,
     },
     {
       title: 'Last Name',
       dataIndex: 'last_name',
       key: 'last_name',
-      render: (text) => <span className="font-medium text-gray-700">{text}</span>,
+      render: (text) => <span className="font-medium text-gray-700 w-full">{text}</span>,
     },
   
     {
       title: 'Email',
       dataIndex: 'email',
       key: 'email',
-      render: (text) => <span className="text-gray-500">{text}</span>,
+      render: (text,record) => <Link to={`/dashboard/general/${record.id}`}><span className="text-gray-500 w-full">{text}</span></Link>
     },
     {
       title: 'Role',
       dataIndex: 'type',
       key: 'type',
-      render: (text) => <span className="font-medium text-gray-700">{text}</span>,
+      render: (text,record) => <Link to={`/dashboard/general/${record.id}`}><span className="font-medium w-full text-gray-700">{text}</span></Link>,
     },
     {
       title: 'Status',
       dataIndex: 'isActive',
       key: 'isActive',
       render: (text, record) => (
-        <span
+        <Link to={`/dashboard/general/${record.id}`}>
+           <span
           onClick={() => handleStatusModalOpen(record)}
-          className={`font-medium text-white cursor-pointer px-2 py-1 rounded ${text ? 'bg-green-500' : 'bg-red-500'}`}
+          className={`font-medium text-white cursor-pointer px-2 py-1 rounded w-full ${text ? 'bg-green-500' : 'bg-red-500'}`}
         >
           {text ? 'Active' : 'Inactive'}
         </span>
+        </Link>
+       
       ),
     },
     {
