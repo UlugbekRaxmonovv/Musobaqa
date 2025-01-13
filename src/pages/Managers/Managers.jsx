@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
-import { Modal, Input, Button, Select, message, Table } from "antd";
+import { Modal, Input, Button, Select, message, Table, Pagination } from "antd";
 import axios from "../../api/index";
 import { CiEdit } from "react-icons/ci";
 import { RiDeleteBin7Line } from "react-icons/ri";
@@ -15,7 +15,6 @@ const Managers = () => {
   const [data, setData] = useState([]);
   const [taskType, setTaskType] = useState("");
   const [status, setStatus] = useState("");
-  const [search, setSearch] = useState("");
   const [taskName, setTaskName] = useState("");
   const [email, setEmail] = useState("");
   const [lastName, setLastName] = useState("");
@@ -25,7 +24,13 @@ const Managers = () => {
   const [modalType, setModalType] = useState("add");
   const [isStatusModalOpen, setIsStatusModalOpen] = useState(false);
   const [currentManagerId, setCurrentManagerId] = useState(null);
+  const [page, setPage] = useState(1);
+  const [pageSize] = useState(1);
+  const [totalOrders, setTotalOrders] = useState(0);
+  const [search, setSearch] = useState("");
+  
   const { theme } = useContext(Context);
+
   useEffect(() => {
     const fetchTasks = async () => {
       const token = localStorage.getItem("x-auth-token");
@@ -35,13 +40,17 @@ const Managers = () => {
       }
 
       try {
-        let api = search ? `/managers?name_like=${search}` : "/managers";
+        let api = search
+          ? `/managers?name_like=${search}`
+          : `/managers?_limit=${pageSize}&_page=${page}`;
         const response = await axios.get(api, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
         });
         setData(response.data);
+        setTotalOrders(response.headers["x-total-count"]); // Assuming the total count is returned in headers
+  
       } catch (err) {
         console.error("Xatolik yuz berdi:", err);
         message.error(err.response?.data || "Xatolik");
@@ -49,7 +58,7 @@ const Managers = () => {
     };
 
     fetchTasks();
-  }, [search]);
+  }, [search, page, pageSize]);
 
   const handleAddTask = () => {
     setModalType("add");
@@ -317,11 +326,18 @@ const Managers = () => {
       </div>
 
       <Table
-        columns={columns}
-        dataSource={data}
-        rowKey="id"
-        pagination={true}
-      />
+      columns={columns}
+      dataSource={data}
+      pagination={false}
+    />
+    <Pagination
+  className="flex justify-center items-center mt-2"
+  pageSize={pageSize}
+  total={totalOrders}
+  current={page}
+  onChange={(newPage) => setPage(newPage)} 
+
+    />
       <Modal
         title={modalType === "add" ? "Add Manager" : "Edit Manager"}
         open={isModalOpen}
