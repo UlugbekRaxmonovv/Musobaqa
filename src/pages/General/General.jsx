@@ -73,6 +73,35 @@ const General = () => {
     setIsModalOpen(false);
   };
 
+
+  const [selectedTasks, setSelectedTasks] = useState([]);
+  console.log(selectedTasks);
+  
+  const handleCheckboxChange = async (task) => {
+    try {
+      const response = await axios.post(
+        `/managers/${id}`,
+        { tasks: task.name }, 
+        {
+          headers: {
+            Authorization: `Bearer ${token}`, 
+          },
+        }
+      );
+  
+      console.log(id);
+  
+      if (response.status === 201) {
+        message.success(`Task "${task.name}" successfully added!`);
+        setSelectedTasks((prev) => [...prev, task.id]);
+      }
+    } catch (error) {
+      console.error(error);
+      message.error(`Failed to add task "${task.name}".`);
+    }
+  };
+  
+
   return (
     <div
     className={`${theme ? "bg-gray-900" : "bg-[rgb(244,241,236)]"} 
@@ -127,7 +156,7 @@ const General = () => {
     <Modal
       title="Yangi Task qo'shish"
       open={isModalOpen}
-      onOk={handleOk}
+      onOk={handleCheckboxChange}
       onCancel={handleCancel}
       okText="Saqlash"
       cancelText="Bekor qilish"
@@ -142,6 +171,8 @@ const General = () => {
     <Input
       type="checkbox"
       className="w-5 h-5 rounded text-blue-500 border-gray-300 focus:ring-blue-500"
+      onChange={() => handleCheckboxChange(item)}
+
     />
   </div>
 ))}
