@@ -7,6 +7,7 @@ import { BsCart } from 'react-icons/bs';
 import { FiMenu } from 'react-icons/fi';
 const { Header, Sider } = Layout;
 import logo from  '../../../assets/images/logo.png'
+import logo1 from  '../../../assets/images/logo1.svg'
 import { VscTasklist } from 'react-icons/vsc';
 import { MdAddTask, MdOutlineAddTask } from 'react-icons/md';
 import { IoMdCheckboxOutline } from 'react-icons/io';
@@ -14,6 +15,8 @@ import { TbUsersPlus } from 'react-icons/tb';
 import { LuLayoutDashboard } from 'react-icons/lu';
 import { HiOutlineUsers } from 'react-icons/hi';
 import axios from '../../../api/index';
+import { RiMoonLine, RiSunLine } from 'react-icons/ri';
+import { Context } from '../../../components/darkMode/Context';
 
 function getItem(label, key, icon, onClick) {
   return {
@@ -28,6 +31,7 @@ function getItem(label, key, icon, onClick) {
 const Manager = () => {
   const [collapsed, setCollapsed] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
+  const { theme, setTheme } = useContext(Context);
   const navigate = useNavigate();
   const sidebarRef = useRef(null);
   const [user, setUser] = useState(null);
@@ -94,32 +98,32 @@ const Manager = () => {
     getItem(
       'General',
       '1',
-      <LuLayoutDashboard  style={{ color: 'black', fontSize: '18px' }} />,
+      <LuLayoutDashboard  style={{ color: theme ? 'white' : 'black', fontSize: '18px' }}  />,
      
     ),
     getItem(
       'BlockLanganar',
       '4',
-      <IoMdCheckboxOutline   style={{ color: 'black', fontSize: '18px' }} />,
+      <IoMdCheckboxOutline   style={{ color: theme ? 'white' : 'black', fontSize: '18px' }}  />,
       () => { navigate('/dashboard/blockLanganar'); setCollapsed(!collapsed); }
     ),
     getItem(
       'Employees',
       '5',
-      <HiOutlineUsers  style={{ color:  'black', fontSize: '18px' }} />,
+      <HiOutlineUsers  style={{ color: theme ? 'white' : 'black', fontSize: '18px' }}  />,
       () => { navigate('/dashboard/managers'); setCollapsed(!collapsed); }
     ),
    
     getItem(
       'Managers',
       '3',
-      <TbUsersPlus  style={{ color: 'black', fontSize: '18px' }} />,
+      <TbUsersPlus  style={{ color: theme ? 'white' : 'black', fontSize: '18px' }}  />,
       () => { navigate('/dashboard/employees'); setCollapsed(!collapsed); }
     ),
     getItem(
       'Tasks',
       '2',
-      <MdOutlineAddTask  style={{ color: 'black', fontSize: '18px' }} />,
+      <MdOutlineAddTask  style={{ color: theme ? 'white' : 'black', fontSize: '18px' }} />,
       () => { navigate('/dashboard/tasks'); setCollapsed(!collapsed); }
     )
    
@@ -174,29 +178,38 @@ const Manager = () => {
   onCollapse={(value) => setCollapsed(value)}
   style={{
     ...sidebarStyle,
-    backgroundColor: 'white',
+    backgroundColor: theme ? '#1f2937' : 'rgb(244,241,236)', 
   }}
   ref={sidebarRef}
-  className="shadow-md" 
+  className={`${theme ? 'bg-[#1f2937] border-gray-700' : 'bg-[rgb(244,241,236)]  '} border-gray-100 border-r-[1px]`} 
 >
   <div className="flex justify-center items-center">
     <Link to="/dashboard/managers" className="cursor-pointer">
-      <img
-        src={logo}
-        alt=""
-        className="w-[150px] h-[150px] -mt-10 object-contain rounded-full"
-      />
+    {
+      theme ?   <img
+      src={logo1}
+      alt=""
+      className="w-[150px] h-[150px] -mt-10 object-contain rounded-full"
+    />
+    :
+    <img
+    src={logo}
+    alt=""
+    className="w-[150px] h-[150px] -mt-10 object-contain rounded-full"
+  />
+    }
     </Link>
   </div>
   <Menu
     selectedKeys={[getSelectedKey()]}
-    theme="menu"
+    theme={theme ? 'menu.theme' : 'menu'}
     defaultSelectedKeys={[getSelectedKey()]}
     mode="inline"
     items={items.map((item) => ({
       ...item,
       label: (
-        <div className="text-black text-[14px] font-poppins">
+        <div  className={`${theme ? 'text-white' : 'text-black'} text-[16px] font-poppins hover:text-blue-500 hover:font-semibold 
+        transition-colors duration-300`}>
           {item.label}
         </div>
       ),
@@ -205,19 +218,29 @@ const Manager = () => {
 </Sider>
 
         <Layout>
-          <Header className= 'bg-white border-b-[1px] border-gray-100 px-4'>
+          <Header className={`border-b-[1px] border-gray-100 px-4' ${theme ? "bg-[#1f2937] border-gray-700" : "bg-[rgb(244,241,236)]"}`}>
             <div className="flex justify-between items-center">
-              <div className="flex items-center gap-2">
-                <div className={`bg-gray-700' cursor-pointer p-2 rounded-md   transition-colors`} onClick={() => setCollapsed(!collapsed)}>
-                  <FiMenu className={`text-black text-xl font-bold cursor-pointer`} />
+              <div className="flex items-center gap-2 ">
+                <div className={`${theme ? 'bg-gray-700' : ' bg-gray-200'} cursor-pointer p-2 rounded-md   transition-colors`} onClick={() => setCollapsed(!collapsed)}>
+                  <FiMenu className={`${theme ? 'text-white' : 'text-black'} text-xl font-bold cursor-pointer ` } />
                 </div>
 
               </div>
               <div className='flex items-center gap-2'>
+              <div
+                  className={`w-10 h-10 flex items-center justify-center rounded-full cursor-pointer transition-colors ${theme ? "bg-gray-700" : "bg-gray-200"
+                    }`}
+                  onClick={() => setTheme(!theme)}
+                >
+                  {
+                    theme ? <RiMoonLine className='w-6 h-6 text-white translate-x-0' /> : <RiSunLine className='w-6 h-6 text-black translate-x-0' />
+                  }
+                </div>
+
                 <Space direction="vertical">
                   <Space wrap>
                     <Dropdown menu={{ items: userMenuItems }} placement="bottomLeft">
-                      <Avatar src={user?.imageUrl} size="large" icon={<UserOutlined />} className={'text-black bg-gray-200'} />
+                      <Avatar src={user?.imageUrl} size="large" icon={<UserOutlined />} className={`${theme ? 'text-white bg-gray-700' : 'text-black bg-gray-200'}`}/>
                     </Dropdown>
                   </Space>
                 </Space>

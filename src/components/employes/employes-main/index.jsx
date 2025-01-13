@@ -1,15 +1,16 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { Button, Input, Modal, Form, Select, notification } from "antd";
 import { SearchOutlined } from "@ant-design/icons";
 import TableComponents from "../table";
 import axios from "../../../api";
 import { FaPlus } from "react-icons/fa6";
+import { Context } from "../../darkMode/Context";
 
 const EmployeesComponents = () => {
   const [reflesh, setReflesh] = useState(false);
   const [openModal, setOpenModal] = useState(false);
   const [form] = Form.useForm();
-
+  const { theme } = useContext(Context);
   const toggleModal = () => {
     setOpenModal(!openModal);
   };
@@ -65,7 +66,9 @@ const EmployeesComponents = () => {
         <Button
           onClick={toggleModal}
           type="primary"
-          className=" add-user w-[152px]  h-[40px] bg-[#14B890] hover:!bg-[#129c7a]"
+          className={`add-user w-[152px] h-[40px] ${
+            theme ? 'bg-[#1f2937] hover:!bg-[#374151]' : 'bg-[#14B890] hover:!bg-[#129c7a]'
+          }`}
         >
           <FaPlus className="add-user-active !transform !transition-transform !duration-300 group-hover:!rotate-90 " />
           Manager add

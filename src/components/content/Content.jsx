@@ -1,11 +1,12 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { Layout } from 'antd';
 import { Outlet } from 'react-router-dom';
+import { Context } from '../darkMode/Context';
 const { Content } = Layout;
 
 
 const DashboardContent = () => {
-
+  const { theme } = useContext(Context);
   return (
     <Content
       style={{
@@ -13,6 +14,7 @@ const DashboardContent = () => {
         overflowY: 'auto',
         background: '#F4F1EC',
       }}
+      className={`Content ${theme ? 'theme' : ''} h-full`}
     >
      <Outlet/>
     </Content>

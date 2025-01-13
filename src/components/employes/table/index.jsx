@@ -1,14 +1,16 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Button, Table, notification, Modal, Input, Select } from "antd";
 import axios from "../../../api";
 import { CiEdit } from "react-icons/ci";
 import { RiDeleteBin7Line } from "react-icons/ri";
+import { Context } from "../../darkMode/Context";
 
 const TableComponents = ({ reflesh }) => {
   const [data, setData] = useState([]);
   const [error, setError] = useState(null);
   const [editingEmployee, setEditingEmployee] = useState(null);
   const [isModalVisible, setIsModalVisible] = useState(false);
+  const { theme } = useContext(Context);
   const [editedEmployeeData, setEditedEmployeeData] = useState({
     name: "",
     email: "",
@@ -173,7 +175,9 @@ const TableComponents = ({ reflesh }) => {
 
   return (
     <div className="px-2">
-      <Table columns={columns} dataSource={data} rowKey="id" />
+      <Table columns={columns} dataSource={data} rowKey="id"   pagination={true}
+        className={theme ? "custom-table theme" : "custom-table"}
+        rowClassName={() => (theme ? "dark-row" : "light-row")}/>
 
       <Modal
         title="Xodimni tahrirlash"

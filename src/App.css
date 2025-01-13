@@ -1,3 +1,31 @@
-.menu{
-    background-color: white !important;
-}
+.Content {
+    background: #ffffff !important;
+    height: 570px !important;
+  }
+  .Content.theme {
+    background: #1f2937 !important;
+  }
+.menu.theme {
+    background: "bg-gray-500 !important";
+  }
+  .custom-table.theme .ant-table-thead > tr > th {
+    background-color: #374151;
+    color: white;
+  }
+  
+  .dark-row {
+    background-color: #1f2937;
+    color: white;
+  }
+  
+  .light-row {
+    background-color: #ffffff;
+    color: black;
+  }
+  
+  .custom-table .ant-table-tbody > tr:hover > td {
+    background-color: inherit !important;
+  }
+  .rounded-full {
+    border-radius: 100px !important;
+  }

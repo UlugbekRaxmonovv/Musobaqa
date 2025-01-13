@@ -1,9 +1,10 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { Modal, Input, Button, Select, message, Table } from 'antd';
 import axios from '../../api/index';
 import { CiEdit } from 'react-icons/ci';
 import { RiDeleteBin7Line } from 'react-icons/ri';
 import { FaPlus } from 'react-icons/fa6';
+import { Context } from '../../components/darkMode/Context';
 
 const { Option } = Select;
 
@@ -16,7 +17,7 @@ const Tasks = () => {
   const [taskType, setTaskType] = useState('');
   const [editTaskId, setEditTaskId] = useState(null);
   const [search, setSearch] = useState("");
-
+  const { theme } = useContext(Context);
   useEffect(() => {
     const fetchTasks = async () => {
       const token = localStorage.getItem('x-auth-token');
@@ -142,13 +143,13 @@ const Tasks = () => {
       title: 'Task name',
       dataIndex: 'name',
       key: 'name',
-      render: (text) => <span className="font-medium text-gray-700">{text}</span>,
+      render: (text) => <span className="">{text}</span>,
     },
     {
       title: 'Role',
       dataIndex: 'type',
       key: 'type',
-      render: (text) => <span className="text-gray-500">{text}</span>,
+      render: (text) => <span className="">{text}</span>,
     },
     {
       title: 'Actions',
@@ -156,37 +157,52 @@ const Tasks = () => {
       render: (_, record) => (
         <div className="flex items-center gap-4">
           <Button
-            className="bg-teal-500 hover:bg-teal-600 text-white"
-            onClick={() => handleEditTask(record.id)}
-            icon={<CiEdit />}
-          />
-          <Button
-            className="bg-red-500 hover:bg-red-600 text-white"
-            onClick={() => handleDeleteTask(record.id)}
-            icon={<RiDeleteBin7Line />}
-          />
+  className={`${
+    theme ? 'bg-[#374151] hover:bg-[#4b5563]' : 'bg-teal-500 hover:bg-teal-600'
+  } text-white`}
+  onClick={() => handleEditTask(record.id)}
+  icon={<CiEdit />}
+/>
+<Button
+  className={`${
+    theme ? 'bg-[#991b1b] hover:bg-[#b91c1c]' : 'bg-red-500 hover:bg-red-600'
+  } text-white`}
+  onClick={() => handleDeleteTask(record.id)}
+  icon={<RiDeleteBin7Line />}
+/>
         </div>
       ),
     },
   ];
 
   return (
-    <div className="py-8 px-2 max-w-full">
+    <div
+    className={`${theme ? "bg-gray-900" : "bg-[rgb(244,241,236)]"} 
+          p-4 min-h-[100%] transition-all 
+          rounded-lg`}
+  >
       <div className="flex flex-col sm:flex-row justify-between gap-4 items-center mb-4">
-        <Button
-          type="primary"
-          className=" add-user w-[152px]  h-[40px] bg-[#14B890] hover:!bg-[#129c7a]"
-          onClick={handleAddTask}
-        >
-          <FaPlus className="add-user-active !transform !transition-transform !duration-300 group-hover:!rotate-90 " />
-           Task add
-        </Button>
-        <Input
-          placeholder="Поиск по familiyasi"
-          value={search}
-          onChange={(e) => setSearch(e.target.value)}
-          className="border border-gray-300 rounded-md px-4 py-2 w-full sm:w-64"
-        />
+      <Button
+  type="primary"
+  className={`add-user w-[152px] h-[40px] ${
+    theme ? 'bg-[#1f2937] hover:!bg-[#374151]' : 'bg-[#14B890] hover:!bg-[#129c7a]'
+  }`}
+  onClick={handleAddTask}
+>
+  <FaPlus className="add-user-active !transform !transition-transform !duration-300 group-hover:!rotate-90" />
+  Task add
+</Button>
+
+<input
+  placeholder="Search"
+  value={search}
+  onChange={(e) => setSearch(e.target.value)}
+  className={`border rounded-md px-4 py-2 w-full sm:w-64 outline-none ${
+    theme ? 'border-[#4b5563] bg-[#1f2937] text-white placeholder-white' : 'border-gray-300 placeholder-gray-400'
+  } focus:outline-none`}
+/>
+
+
       </div>
 
       <Table
@@ -194,10 +210,8 @@ const Tasks = () => {
         dataSource={data.filter((item) => item.name.toLowerCase().includes(search.toLowerCase()))}
         rowKey="id"
         pagination={true}
-        style={{
-          height:"65vh",
-          overflowX: "scroll"
-        }}
+        className={theme ? "custom-table theme" : "custom-table"}
+        rowClassName={() => (theme ? "dark-row" : "light-row")}
       
         
       />
