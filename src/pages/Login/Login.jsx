@@ -4,7 +4,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { LockOutlined } from "@ant-design/icons";
 import toast from "react-hot-toast";
 import axios from "../../api/index";
-
+import { MdEmail } from 'react-icons/md'
 
 const Login = () => {
   const navigate = useNavigate();
@@ -61,7 +61,7 @@ const Login = () => {
             <Input
               placeholder="Username"
               className="h-12 text-lg"
-             
+              prefix={<MdEmail className="text-gray-400" />}
             />
           </Form.Item>
 
