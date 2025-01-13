@@ -237,21 +237,27 @@ const Tasks = () => {
         className="max-w-sm w-full"
       >
         <div className="space-y-4">
-          <Input
-            placeholder="Vazifa nomi"
-            value={taskName}
-            onChange={(e) => setTaskName(e.target.value)}
-            className="border border-gray-300 rounded-md"
-          />
-          <Select
-            placeholder="Vazifa turi"
-            value={taskType}
-            onChange={(value) => setTaskType(value)}
-            className="w-full"
-          >
-            <Option value="Manager">Manager</Option>
-            <Option value="Employee">Employee</Option>
-          </Select>
+          <div className="flex flex-col gap-2 mt-4">
+            <label htmlFor="1">Hodim kiriting</label>
+            <Input
+              placeholder="Vazifa nomi"
+              value={taskName}
+              onChange={(e) => setTaskName(e.target.value)}
+              className="border border-gray-300 rounded-md"
+            />
+          </div>
+          <div className="flex flex-col gap-2 mt-4">
+            <label htmlFor="2">Ish turi</label>
+            <Select
+              placeholder="Vazifa turi"
+              value={taskType}
+              onChange={(value) => setTaskType(value)}
+              className="w-full"
+            >
+              <Option value="Manager">Manager</Option>
+              <Option value="Employee">Employee</Option>
+            </Select>
+          </div>
         </div>
       </Modal>
     </div>
