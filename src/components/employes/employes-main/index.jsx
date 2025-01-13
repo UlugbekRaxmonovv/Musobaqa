@@ -11,6 +11,7 @@ const EmployeesComponents = () => {
   const [openModal, setOpenModal] = useState(false);
   const [form] = Form.useForm();
   const { theme } = useContext(Context);
+  const [searchdata, setSearchData] = useState("");
   const toggleModal = () => {
     setOpenModal(!openModal);
   };
@@ -67,17 +68,24 @@ const EmployeesComponents = () => {
           onClick={toggleModal}
           type="primary"
           className={`add-user w-[152px] h-[40px] ${
-            theme ? 'bg-[#1f2937] hover:!bg-[#374151]' : 'bg-[#14B890] hover:!bg-[#129c7a]'
+            theme
+              ? "bg-[#1f2937] hover:!bg-[#374151]"
+              : "bg-[#14B890] hover:!bg-[#129c7a]"
           }`}
         >
           <FaPlus className="add-user-active !transform !transition-transform !duration-300 group-hover:!rotate-90 " />
           Manager add
         </Button>
-        <Input
-          type="search"
-          className="w-[30%] h-[40px]"
-          placeholder="Поиск по фамилии"
-          prefix={<SearchOutlined />}
+
+        <input
+          placeholder="Search"
+          value={searchdata}
+          onChange={(e) => setSearchData(e.target.value)}
+          className={`border rounded-md px-4 py-2 w-full sm:w-64 outline-none ${
+            theme
+              ? "border-[#4b5563] bg-[#1f2937] text-white placeholder-white"
+              : "border-gray-300 placeholder-gray-400"
+          } focus:outline-none`}
         />
       </div>
 
@@ -167,10 +175,9 @@ const EmployeesComponents = () => {
         </Form>
       </Modal>
 
-      <TableComponents reflesh={reflesh} />
+      <TableComponents reflesh={reflesh} searchdata={searchdata} />
     </div>
   );
 };
 
 export default EmployeesComponents;
-
