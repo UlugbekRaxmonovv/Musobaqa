@@ -28,9 +28,7 @@ const Managers = () => {
   const [pageSize] = useState(5);
   const [totalOrders, setTotalOrders] = useState(0);
   const [search, setSearch] = useState("");
-  
   const { theme } = useContext(Context);
-
   useEffect(() => {
     const fetchTasks = async () => {
       const token = localStorage.getItem("x-auth-token");
@@ -49,7 +47,7 @@ const Managers = () => {
           },
         });
         setData(response.data);
-        setTotalOrders(response.headers["x-total-count"]); // Assuming the total count is returned in headers
+        setTotalOrders(response.headers["x-total-count"]);
   
       } catch (err) {
         console.error("Xatolik yuz berdi:", err);

@@ -226,7 +226,7 @@ const Manager = () => {
                 </div>
 
               </div>
-              <div className='flex items-center gap-2'>
+              <div className='flex items-center justify-end gap-2'>
               <div
                   className={`w-10 h-10 flex items-center justify-center rounded-full cursor-pointer transition-colors ${theme ? "bg-gray-700" : "bg-gray-200"
                     }`}
