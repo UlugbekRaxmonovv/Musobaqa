@@ -215,14 +215,12 @@ const Managers = () => {
       dataIndex: 'isActive',
       key: 'isActive',
       render: (text, record) => (
-        <Link to={`/dashboard/general/${record.id}`}>
            <span
           onClick={() => handleStatusModalOpen(record)}
           className={`font-medium text-white cursor-pointer px-2 py-1 rounded w-full ${text ? 'bg-green-500' : 'bg-red-500'}`}
         >
           {text ? 'Active' : 'Inactive'}
         </span>
-        </Link>
        
       ),
     },
