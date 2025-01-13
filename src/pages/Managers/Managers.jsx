@@ -31,9 +31,10 @@ const Managers = () => {
         console.error('Token topilmadi! Iltimos, tizimga qayta kiring.');
         return;
       }
-
+  
       try {
-        const response = await axios.get('/managers', {
+        let api = search ? `/managers?name_like=${search}` : '/managers'; 
+        const response = await axios.get(api, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -44,9 +45,10 @@ const Managers = () => {
         message.error(err.response?.data || 'Xatolik');
       }
     };
-
+  
     fetchTasks();
-  }, []);
+  }, [search]);
+  
 
   const handleAddTask = () => {
     setModalType('add');
@@ -195,7 +197,7 @@ const Managers = () => {
       title: 'Last Name',
       dataIndex: 'last_name',
       key: 'last_name',
-      render: (text) => <span className="font-medium text-gray-700 w-full">{text}</span>,
+      render: (text,record) =><Link to={`/dashboard/general/${record.id}`}> <span className="font-medium  text-gray-700 w-full">{text}</span> </Link>,
     },
   
     {
@@ -292,7 +294,7 @@ const Managers = () => {
 
       <Table
         columns={columns}
-        dataSource={data.filter((item) => item.name.toLowerCase().includes(search.toLowerCase()))}
+        dataSource={data}
         rowKey="id"
         pagination={false}
         scroll={{
@@ -302,7 +304,7 @@ const Managers = () => {
         style={{ width: "100%", whiteSpace: "nowrap", cursor: "pointer" }}
       />
 <Modal
-  title={modalType === 'add' ? "Add Task" : "Edit Task"}
+  title={modalType === 'add' ? "Add Manager" : "Edit Manager"}
   open={isModalOpen}
   onOk={handleModalOk}
   onCancel={handleModalCancel}
@@ -311,11 +313,11 @@ const Managers = () => {
   <div className="space-y-4">
     <div>
       <label htmlFor="taskName" className="block text-sm font-medium text-gray-700">
-        Task Name
+       Name
       </label>
       <Input
         id="taskName"
-        placeholder="Enter task name"
+        placeholder="Name"
         value={taskName}
         onChange={(e) => setTaskName(e.target.value)}
         className="border border-gray-300 rounded-md mt-1"

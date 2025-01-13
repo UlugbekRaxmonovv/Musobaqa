@@ -20,9 +20,10 @@ const Login = () => {
 
       if (response.data?.accessToken) {
         localStorage.setItem("x-auth-token",response.data?.accessToken )
+        localStorage.setItem('user',response.data?.user?.email)
         toast.success("Muvaffaqiyatli kirildi");
         console.log(response.data?.accessToken);
-        navigate("/dashboard/general");
+        navigate("/dashboard/managers");
       } else {
         toast.error("Login yoki parol notog'ri");
       }
