@@ -26,6 +26,7 @@
   .custom-table .ant-table-tbody > tr:hover > td {
     background-color: inherit !important;
   }
+  
   .rounded-full {
     border-radius: 100px !important;
   }
