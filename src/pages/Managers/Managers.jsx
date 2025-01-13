@@ -25,11 +25,15 @@ const Managers = () => {
   const [isStatusModalOpen, setIsStatusModalOpen] = useState(false);
   const [currentManagerId, setCurrentManagerId] = useState(null);
   const [page, setPage] = useState(1);
-  const [pageSize] = useState(5);
+  const [pageSize, setPageSize] = useState(5);
   const [totalOrders, setTotalOrders] = useState(0);
   const [search, setSearch] = useState("");
-  
   const { theme } = useContext(Context);
+
+  const handlePageSizeChange = (value) => {
+    setPageSize(value);
+    setPage(1); 
+  };
 
   useEffect(() => {
     const fetchTasks = async () => {
@@ -49,8 +53,7 @@ const Managers = () => {
           },
         });
         setData(response.data);
-        setTotalOrders(response.headers["x-total-count"]); // Assuming the total count is returned in headers
-  
+        setTotalOrders(response.headers["x-total-count"]); 
       } catch (err) {
         console.error("Xatolik yuz berdi:", err);
         message.error(err.response?.data || "Xatolik");
@@ -197,7 +200,7 @@ const Managers = () => {
       render: (text, record) => (
         <>
           <Link to={`/dashboard/general/${record.id}`}>
-            <span className="font-medium w-full text-gray-700">{text}</span>
+            <span className="font-medium w-full ">{text}</span>
           </Link>
         </>
       ),
@@ -209,7 +212,7 @@ const Managers = () => {
       render: (text, record) => (
         <Link to={`/dashboard/general/${record.id}`}>
           {" "}
-          <span className="font-medium  text-gray-700 w-full">{text}</span>{" "}
+          <span className="font-medium   w-full">{text}</span>{" "}
         </Link>
       ),
     },
@@ -220,7 +223,7 @@ const Managers = () => {
       key: "email",
       render: (text, record) => (
         <Link to={`/dashboard/general/${record.id}`}>
-          <span className="text-gray-500 w-full">{text}</span>
+          <span className=" w-full">{text}</span>
         </Link>
       ),
     },
@@ -230,7 +233,7 @@ const Managers = () => {
       key: "type",
       render: (text, record) => (
         <Link to={`/dashboard/general/${record.id}`}>
-          <span className="font-medium w-full text-gray-700">{text}</span>
+          <span className="font-medium w-full ">{text}</span>
         </Link>
       ),
     },
@@ -304,40 +307,69 @@ const Managers = () => {
 
   return (
     <div
-    className={`${theme ? "bg-gray-900" : "bg-[rgb(244,241,236)]"} 
-          p-4 min-h-[100%] transition-all 
+      className={`${theme ? "bg-gray-900" : "bg-[rgb(244,241,236)]"} 
+         py-8 px-2 min-h-[100%] transition-all 
           rounded-lg`}
-  >
+    >
       <div className="flex flex-col sm:flex-row justify-between gap-4 items-center mb-4">
         <Button
           type="primary"
-          className=" add-user w-[152px]  h-[40px] bg-[#14B890] hover:!bg-[#129c7a]"
+          className={`add-user w-[152px] h-[40px] ${
+            theme
+              ? "bg-[#1f2937] hover:!bg-[#374151]"
+              : "bg-[#14B890] hover:!bg-[#129c7a]"
+          }`}
           onClick={handleAddTask}
         >
           <FaPlus className="add-user-active !transform !transition-transform !duration-300 group-hover:!rotate-90 " />
           Employee add
         </Button>
-        <Input
-          placeholder="Поиск по familiyasi"
+        <input
+          placeholder="Search"
           value={search}
           onChange={(e) => setSearch(e.target.value)}
-          className="border border-gray-300 rounded-md px-4 py-2 w-full sm:w-64"
+          className={`border rounded-md px-4 py-2 w-full sm:w-64 outline-none ${
+            theme
+              ? "border-[#4b5563] bg-[#1f2937] text-white placeholder-white"
+              : "border-gray-300 placeholder-gray-400"
+          } focus:outline-none`}
         />
       </div>
 
       <Table
-      columns={columns}
-      dataSource={data}
-      pagination={false}
-    />
-    <Pagination
-  className="flex justify-center items-center mt-2"
-  pageSize={pageSize}
-  total={totalOrders}
-  current={page}
-  onChange={(newPage) => setPage(newPage)} 
+        columns={columns}
+        dataSource={data}
+        pagination={false}
+        className={theme ? "custom-table theme" : "custom-table"}
+        rowClassName={() => (theme ? "dark-row" : "light-row")}
+      />
+      <div className="flex items-center justify-between mt-7">
+        <div>
+          <h2>
+            {pageSize * (page - 1) + 1}–{Math.min(pageSize * page, totalOrders)}
+            из {totalOrders}
+          </h2>
+        </div>
+        <Pagination
+          className="flex justify-center items-center mt-2"
+          pageSize={pageSize}
+          total={totalOrders}
+          current={page}
+          onChange={(newPage) => setPage(newPage)}
+        />
 
-    />
+        <div>
+          <select
+            className="outline-none w-[120px] h-[40px] rounded-md"
+            onChange={(e) => handlePageSizeChange(parseInt(e.target.value, 10))}
+            value={pageSize}
+          >
+            <option value="5">5 / стр.</option>
+            <option value="10">10 / стр.</option>
+            <option value="20">20 / стр.</option>
+          </select>
+        </div>
+      </div>
       <Modal
         title={modalType === "add" ? "Add Manager" : "Edit Manager"}
         open={isModalOpen}

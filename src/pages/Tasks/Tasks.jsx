@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
-import { Modal, Input, Button, Select, message, Table } from "antd";
+import { Modal, Input, Button, Select, message, Table, Pagination } from "antd";
 import axios from "../../api/index";
 import { CiEdit } from "react-icons/ci";
 import { RiDeleteBin7Line } from "react-icons/ri";
@@ -18,6 +18,9 @@ const Tasks = () => {
   const [editTaskId, setEditTaskId] = useState(null);
   const [search, setSearch] = useState("");
   const { theme } = useContext(Context);
+  const [page, setPage] = useState(1);
+  const [pageSize] = useState(5);
+  const [totalOrders, setTotalOrders] = useState(0);
   useEffect(() => {
     const fetchTasks = async () => {
       const token = localStorage.getItem("x-auth-token");
@@ -27,7 +30,7 @@ const Tasks = () => {
       }
 
       try {
-        const response = await axios.get("/tasks", {
+        const response = await axios.get(`/tasks?name_like=${search}`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -40,7 +43,7 @@ const Tasks = () => {
     };
 
     fetchTasks();
-  }, []);
+  }, [search]);
 
   const handleAddTask = () => {
     setModalType("add");
@@ -209,13 +212,19 @@ const Tasks = () => {
 
       <Table
         columns={columns}
-        dataSource={data.filter((item) =>
-          item.name.toLowerCase().includes(search.toLowerCase())
-        )}
+        dataSource={data}
         rowKey="id"
-        pagination={true}
+        pagination={false}
         className={theme ? "custom-table theme" : "custom-table"}
         rowClassName={() => (theme ? "dark-row" : "light-row")}
+      />
+
+      <Pagination
+        className="flex justify-center items-center mt-2"
+        pageSize={pageSize}
+        total={totalOrders}
+        current={page}
+        onChange={(newPage) => setPage(newPage)}
       />
 
       <Modal
@@ -226,21 +235,27 @@ const Tasks = () => {
         className="max-w-sm w-full"
       >
         <div className="space-y-4">
-          <Input
-            placeholder="Vazifa nomi"
-            value={taskName}
-            onChange={(e) => setTaskName(e.target.value)}
-            className="border border-gray-300 rounded-md"
-          />
-          <Select
-            placeholder="Vazifa turi"
-            value={taskType}
-            onChange={(value) => setTaskType(value)}
-            className="w-full"
-          >
-            <Option value="Manager">Manager</Option>
-            <Option value="Employee">Employee</Option>
-          </Select>
+          <div className="flex flex-col gap-2 mt-4">
+            <label htmlFor="1">Hodim kiriting</label>
+            <Input
+              placeholder="Vazifa nomi"
+              value={taskName}
+              onChange={(e) => setTaskName(e.target.value)}
+              className="border border-gray-300 rounded-md"
+            />
+          </div>
+          <div className="flex flex-col gap-2 mt-4">
+            <label htmlFor="2">Ish turi</label>
+            <Select
+              placeholder="Vazifa turi"
+              value={taskType}
+              onChange={(value) => setTaskType(value)}
+              className="w-full"
+            >
+              <Option value="Manager">Manager</Option>
+              <Option value="Employee">Employee</Option>
+            </Select>
+          </div>
         </div>
       </Modal>
     </div>

@@ -1,5 +1,13 @@
 import React, { useContext, useEffect, useState } from "react";
-import { Button, Table, notification, Modal, Input, Select } from "antd";
+import {
+  Button,
+  Table,
+  notification,
+  Modal,
+  Input,
+  Select,
+  Pagination,
+} from "antd";
 import axios from "../../../api";
 import { CiEdit } from "react-icons/ci";
 import { RiDeleteBin7Line } from "react-icons/ri";
@@ -11,11 +19,19 @@ const TableComponents = ({ reflesh, searchdata }) => {
   const [editingEmployee, setEditingEmployee] = useState(null);
   const [isModalVisible, setIsModalVisible] = useState(false);
   const { theme } = useContext(Context);
+  const [page, setPage] = useState(1);
+  const [pageSize, setPageSize] = useState(5);
+  const [totalOrders, setTotalOrders] = useState(0);
   const [editedEmployeeData, setEditedEmployeeData] = useState({
     name: "",
     email: "",
     type: "",
   });
+
+  const handlePageSizeChange = (value) => {
+    setPageSize(value);
+    setPage(1); // Saqlashda birinchi sahifaga qaytish
+  };
 
   const columns = [
     {
@@ -74,7 +90,7 @@ const TableComponents = ({ reflesh, searchdata }) => {
       try {
         let api = searchdata
           ? `/employees?name_like=${searchdata}`
-          : "/employees";
+          : `/employees?_limit=${pageSize}&_page=${page}`;
         const response = await axios.get(api, {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -82,6 +98,7 @@ const TableComponents = ({ reflesh, searchdata }) => {
         });
 
         setData(response.data);
+        setTotalOrders(response.headers["x-total-count"]);
       } catch (err) {
         console.error("Xatolik yuz berdi:", err);
         setError(err.response?.data || "Xatolik");
@@ -89,7 +106,7 @@ const TableComponents = ({ reflesh, searchdata }) => {
     };
 
     fetchEmployees();
-  }, [reflesh, searchdata]);
+  }, [reflesh, searchdata, page, pageSize]);
 
   const handleDelete = (id) => {
     if (!id) {
@@ -199,9 +216,42 @@ const TableComponents = ({ reflesh, searchdata }) => {
 
   return (
     <div className="">
-      <Table columns={columns} dataSource={data} rowKey="id"   pagination={true}
+      <Table
+        columns={columns}
+        dataSource={data}
+        rowKey="id"
+        pagination={false}
         className={theme ? "custom-table theme" : "custom-table"}
-        rowClassName={() => (theme ? "dark-row" : "light-row")}/>
+        rowClassName={() => (theme ? "dark-row" : "light-row")}
+      />
+
+      <div className="flex items-center justify-between mt-7">
+        <div>
+          <h2>
+            {pageSize * (page - 1) + 1}–{Math.min(pageSize * page, totalOrders)}
+            из {totalOrders}
+          </h2>
+        </div>
+        <Pagination
+          className="flex justify-center items-center mt-2"
+          pageSize={pageSize}
+          total={totalOrders}
+          current={page}
+          onChange={(newPage) => setPage(newPage)}
+        />
+
+        <div>
+          <select
+            className="outline-none w-[120px] h-[40px] rounded-md"
+            onChange={(e) => handlePageSizeChange(parseInt(e.target.value, 10))}
+            value={pageSize}
+          >
+            <option value="5">5 / стр.</option>
+            <option value="10">10 / стр.</option>
+            <option value="20">20 / стр.</option>
+          </select>
+        </div>
+      </div>
 
       <Modal
         title="Xodimni tahrirlash"
@@ -209,40 +259,52 @@ const TableComponents = ({ reflesh, searchdata }) => {
         onCancel={() => setIsModalVisible(false)}
         onOk={handleSave}
       >
-        <Input
-          placeholder="Full Name"
-          value={editedEmployeeData.name}
-          onChange={(e) =>
-            setEditedEmployeeData({
-              ...editedEmployeeData,
-              name: e.target.value,
-            })
-          }
-        />
-        <Input
-          placeholder="Email"
-          value={editedEmployeeData.email}
-          onChange={(e) =>
-            setEditedEmployeeData({
-              ...editedEmployeeData,
-              email: e.target.value,
-            })
-          }
-        />
-        <Select
-          placeholder="Select Type"
-          value={editedEmployeeData.type}
-          onChange={(value) =>
-            setEditedEmployeeData({
-              ...editedEmployeeData,
-              type: value,
-            })
-          }
-          style={{ width: "100%" }}
-        >
-          <Select.Option value="Manager">Manager</Select.Option>
-          <Select.Option value="Xodimlar">Xodimlar</Select.Option>
-        </Select>
+        <div className="flex flex-col gap-2">
+          <label htmlFor="1">FirstName</label>
+          <Input
+            placeholder="Full Name"
+            value={editedEmployeeData.name}
+            onChange={(e) =>
+              setEditedEmployeeData({
+                ...editedEmployeeData,
+                name: e.target.value,
+              })
+            }
+          />
+        </div>
+
+        <div className="flex flex-col gap-2 mt-4">
+          <label htmlFor="2">Email</label>
+          <Input
+            placeholder="Email"
+            value={editedEmployeeData.email}
+            onChange={(e) =>
+              setEditedEmployeeData({
+                ...editedEmployeeData,
+                email: e.target.value,
+              })
+            }
+          />
+        </div>
+
+        <div className="flex flex-col gap-2 mt-4">
+          <label htmlFor="3">Role</label>
+
+          <Select
+            placeholder="Select Type"
+            value={editedEmployeeData.type}
+            onChange={(value) =>
+              setEditedEmployeeData({
+                ...editedEmployeeData,
+                type: value,
+              })
+            }
+            style={{ width: "100%" }}
+          >
+            <Select.Option value="Manager">Manager</Select.Option>
+            <Select.Option value="Xodimlar">Xodimlar</Select.Option>
+          </Select>
+        </div>
       </Modal>
     </div>
   );

@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
-import { Button, Input, Modal, Table, Dropdown } from "antd";
+import { Button, Input, Modal, Table, Dropdown, Pagination } from "antd";
 import { FaPlus } from "react-icons/fa6";
 import { CiEdit } from "react-icons/ci";
 import { RiDeleteBin7Line } from "react-icons/ri";
@@ -11,6 +11,10 @@ const BlockLanganar = () => {
   const [data, setData] = useState([]);
   const [searchValue, setSearchValue] = useState("");
   const [filteredData, setFilteredData] = useState([]);
+  const [page, setPage] = useState(1);
+  const [pageSize] = useState(5);
+  const [totalOrders, setTotalOrders] = useState(0);
+
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalType, setModalType] = useState(null); // "unblock" or "delete"
   const [selectedId, setSelectedId] = useState(null);
@@ -139,8 +143,15 @@ const BlockLanganar = () => {
   ];
 
   return (
-    <div className="blocked-users flex flex-col gap-[20px] py-8 px-2 ">
-      <input
+  
+
+ <>
+      <div
+        className={`${theme ? "bg-gray-900" : "bg-[rgb(244,241,236)]"} 
+    py-8 px-2 min-h-[510px] transition-all 
+    rounded-lg`}
+      >
+            <input
         className={`border rounded-md px-4 py-2 w-full sm:w-64 outline-none ${
           theme
             ? "border-[#4b5563] bg-[#1f2937] text-white placeholder-white"
@@ -151,12 +162,6 @@ const BlockLanganar = () => {
         value={searchValue}
         onChange={handleSearch}
       />
-
-      <div
-        className={`${theme ? "bg-gray-900" : "bg-[rgb(244,241,236)]"} 
-    py-8 px-2 min-h-[510px] transition-all 
-    rounded-lg`}
-      >
         <Table
           className={theme ? "custom-table theme" : "custom-table"}
           rowClassName={() => (theme ? "dark-row" : "light-row")}
@@ -164,6 +169,17 @@ const BlockLanganar = () => {
           dataSource={filteredData}
           rowKey="id"
           size="middle"
+          pagination={false}
+          style={{marginTop:'20px'}}
+          
+        />
+
+        <Pagination
+          className="flex justify-center items-center mt-2"
+          pageSize={pageSize}
+          total={totalOrders}
+          current={page}
+          onChange={(newPage) => setPage(newPage)}
         />
       </div>
 
@@ -183,7 +199,7 @@ const BlockLanganar = () => {
           ? "Xodimni rostan ham blockdan chiqarishni xohlaysizmi?"
           : "Xodimni o'chirib yuborishni xohlaysizmi?"}
       </Modal>
-    </div>
+ </>
   );
 };
 
