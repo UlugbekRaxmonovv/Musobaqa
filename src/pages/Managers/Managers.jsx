@@ -1,10 +1,11 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Modal, Input, Button, Select, message, Table } from "antd";
 import axios from "../../api/index";
 import { CiEdit } from "react-icons/ci";
 import { RiDeleteBin7Line } from "react-icons/ri";
 import { FaPlus } from "react-icons/fa6";
 import { Link } from "react-router-dom";
+import { Context } from "../../components/darkMode/Context";
 
 const { Option } = Select;
 
@@ -24,6 +25,7 @@ const Managers = () => {
   const [modalType, setModalType] = useState("add");
   const [isStatusModalOpen, setIsStatusModalOpen] = useState(false);
   const [currentManagerId, setCurrentManagerId] = useState(null);
+  const { theme } = useContext(Context);
   useEffect(() => {
     const fetchTasks = async () => {
       const token = localStorage.getItem("x-auth-token");
@@ -292,7 +294,11 @@ const Managers = () => {
   };
 
   return (
-    <div className="py-8 px-2 max-w-full">
+    <div
+    className={`${theme ? "bg-gray-900" : "bg-[rgb(244,241,236)]"} 
+          p-4 min-h-[100%] transition-all 
+          rounded-lg`}
+  >
       <div className="flex flex-col sm:flex-row justify-between gap-4 items-center mb-4">
         <Button
           type="primary"

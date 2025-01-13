@@ -178,7 +178,7 @@ const Tasks = () => {
   return (
     <div
     className={`${theme ? "bg-gray-900" : "bg-[rgb(244,241,236)]"} 
-          p-4 min-h-[100%] transition-all 
+          py-8 px-2  min-h-[100%] transition-all 
           rounded-lg`}
   >
       <div className="flex flex-col sm:flex-row justify-between gap-4 items-center mb-4">

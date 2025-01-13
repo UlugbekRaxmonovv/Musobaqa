@@ -63,7 +63,7 @@ const EmployeesComponents = () => {
 
   return (
     <div className="">
-      <div className="flex items-center justify-between gap-[20px] py-8 px-2">
+      <div className="flex items-center justify-between gap-[20px] ">
         <Button
           onClick={toggleModal}
           type="primary"
@@ -175,7 +175,9 @@ const EmployeesComponents = () => {
         </Form>
       </Modal>
 
-      <TableComponents reflesh={reflesh} searchdata={searchdata} />
+     <div className="mt-3">
+     <TableComponents reflesh={reflesh} searchdata={searchdata} />
+     </div>
     </div>
   );
 };

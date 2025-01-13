@@ -198,7 +198,7 @@ const TableComponents = ({ reflesh, searchdata }) => {
   };
 
   return (
-    <div className="px-2">
+    <div className="">
       <Table columns={columns} dataSource={data} rowKey="id"   pagination={true}
         className={theme ? "custom-table theme" : "custom-table"}
         rowClassName={() => (theme ? "dark-row" : "light-row")}/>
