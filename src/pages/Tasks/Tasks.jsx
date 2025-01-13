@@ -30,7 +30,7 @@ const Tasks = () => {
       }
 
       try {
-        const response = await axios.get("/tasks", {
+        const response = await axios.get(`/tasks?name_like=${search}`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -43,7 +43,7 @@ const Tasks = () => {
     };
 
     fetchTasks();
-  }, []);
+  }, [search]);
 
   const handleAddTask = () => {
     setModalType("add");

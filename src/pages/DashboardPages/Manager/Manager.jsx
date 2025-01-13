@@ -193,7 +193,7 @@ const Manager = () => {
   className={`${theme ? 'bg-[#1f2937] border-gray-700' : 'bg-[rgb(244,241,236)]  '} border-gray-100 border-r-[1px]`} 
 >
   <div className="flex justify-center items-center">
-    <Link to="/dashboard/status" className="cursor-pointer">
+    <Link to="/dashboard/statestika" className="cursor-pointer">
     {
       theme ?   <img
       src={logo1}
