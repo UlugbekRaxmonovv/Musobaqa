@@ -9,9 +9,9 @@ import axios from "../../api/index";
 import { Table, Dropdown } from "antd";
 
 const BlockLanganar = () => {
-  const [data, setData] = useState([]); 
-  const [searchValue, setSearchValue] = useState(""); 
-  const [filteredData, setFilteredData] = useState([]); 
+  const [data, setData] = useState([]);
+  const [searchValue, setSearchValue] = useState("");
+  const [filteredData, setFilteredData] = useState([]);
 
   const unblock = async (id) => {
     if (!id) return;
@@ -63,8 +63,6 @@ const BlockLanganar = () => {
     }
   };
 
-  
-
   const items = (id) => [
     {
       key: "1",
@@ -83,6 +81,12 @@ const BlockLanganar = () => {
   ];
 
   const columns = [
+    {
+      title: <div className="text-center">{"№"}</div>,
+      dataIndex: "number",
+      render: (_, __, index) => <div className="text-center">{index + 1}</div>,
+    },
+
     {
       title: "Ism-familiya",
       dataIndex: "name",
@@ -166,14 +170,12 @@ const BlockLanganar = () => {
       );
       setFilteredData(searchResults);
     } else {
-
       setFilteredData(data);
     }
   };
 
   return (
     <div className="blocked-users flex flex-col gap-[20px] py-8 px-2">
-
       <Input
         className="w-[30%] h-[40px]"
         placeholder="Поиск по фамилии"
@@ -182,15 +184,15 @@ const BlockLanganar = () => {
         onChange={handleSearch}
       />
 
-        <div className="table">
-          <Table
-            className=""
-            columns={columns}
-            dataSource={data}
-            size="middle"
-          />
-        </div>
+      <div className="table">
+        <Table
+          columns={columns}
+          dataSource={filteredData}
+          rowKey="id"
+          size="middle"
+        />
       </div>
+    </div>
   );
 };
 

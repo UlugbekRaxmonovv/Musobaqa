@@ -61,14 +61,14 @@ const EmployeesComponents = () => {
 
   return (
     <div className="">
-      <div className=" flex flex-col gap-[20px] py-8 px-2">
+      <div className="flex items-center justify-between gap-[20px] py-8 px-2">
         <Button
           onClick={toggleModal}
           type="primary"
           className=" add-user w-[152px]  h-[40px] bg-[#14B890] hover:!bg-[#129c7a]"
         >
           <FaPlus className="add-user-active !transform !transition-transform !duration-300 group-hover:!rotate-90 " />
-          Hodim qo’shish
+          Manager add
         </Button>
         <Input
           type="search"

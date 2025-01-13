@@ -227,7 +227,7 @@ const Managers = () => {
       ),
     },
     {
-      title: 'Amallar',
+      title: 'Actions',
       key: 'actions',
       render: (_, record) => (
         <div className="flex items-center gap-4">
@@ -282,7 +282,7 @@ const Managers = () => {
           onClick={handleAddTask}
         >
           <FaPlus className="add-user-active !transform !transition-transform !duration-300 group-hover:!rotate-90 " />
-          Hodim qo’shish
+          Employee add
         </Button>
         <Input
           placeholder="Поиск по familiyasi"
@@ -296,12 +296,8 @@ const Managers = () => {
         columns={columns}
         dataSource={data}
         rowKey="id"
-        pagination={false}
-        scroll={{
-          x: 'max-content', 
-          y: '60vh',          
-        }}
-        style={{ width: "100%", whiteSpace: "nowrap", cursor: "pointer" }}
+        pagination={true}
+       
       />
 <Modal
   title={modalType === 'add' ? "Add Manager" : "Edit Manager"}
