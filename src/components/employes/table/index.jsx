@@ -4,7 +4,7 @@ import axios from "../../../api";
 import { CiEdit } from "react-icons/ci";
 import { RiDeleteBin7Line } from "react-icons/ri";
 
-const TableComponents = ({ reflesh }) => {
+const TableComponents = ({ reflesh, searchdata }) => {
   const [data, setData] = useState([]);
   const [error, setError] = useState(null);
   const [editingEmployee, setEditingEmployee] = useState(null);
@@ -16,6 +16,15 @@ const TableComponents = ({ reflesh }) => {
   });
 
   const columns = [
+    {
+      title: <div className="text-center">{"№"}</div>,
+      width: 20,
+      render: (_, record, index) => (
+        <>
+          <div className="text-center w-full">{index + 1}</div>
+        </>
+      ),
+    },
     {
       title: "FullName",
       dataIndex: "name",
@@ -61,7 +70,10 @@ const TableComponents = ({ reflesh }) => {
       }
 
       try {
-        const response = await axios.get("/employees", {
+        let api = searchdata
+          ? `/employees?name_like=${searchdata}`
+          : "/employees";
+        const response = await axios.get(api, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -75,9 +87,9 @@ const TableComponents = ({ reflesh }) => {
     };
 
     fetchEmployees();
-  }, [reflesh]);
+  }, [reflesh, searchdata]);
 
-  const handleDelete = async (id) => {
+  const handleDelete = (id) => {
     if (!id) {
       notification.error({
         message: "Xatolik",
@@ -95,27 +107,39 @@ const TableComponents = ({ reflesh }) => {
       return;
     }
 
-    try {
-      const response = await axios.delete(`/employees/${id}`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+    // Show confirmation modal before deleting
+    Modal.confirm({
+      title: "Xodimni o'chirishni tasdiqlaysizmi?",
+      content: "Ushbu xodimni o'chirishni xohlaysizmi?",
+      okText: "Ha",
+      cancelText: "Yo'q",
+      onOk: async () => {
+        try {
+          const response = await axios.delete(`/employees/${id}`, {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          });
 
-      if (response.status === 200) {
-        setData(data.filter((item) => item.id !== id));
-        notification.success({
-          message: "Muvaffaqiyat",
-          description: "Xodim muvaffaqiyatli o'chirildi.",
-        });
-      }
-    } catch (err) {
-      console.error("Error during deletion:", err);
-      notification.error({
-        message: "Xatolik",
-        description: err.response?.data || "Xatolik yuz berdi.",
-      });
-    }
+          if (response.status === 200) {
+            setData(data.filter((item) => item.id !== id));
+            notification.success({
+              message: "Muvaffaqiyat",
+              description: "Xodim muvaffaqiyatli o'chirildi.",
+            });
+          }
+        } catch (err) {
+          console.error("Error during deletion:", err);
+          notification.error({
+            message: "Xatolik",
+            description: err.response?.data || "Xatolik yuz berdi.",
+          });
+        }
+      },
+      onCancel() {
+        console.log("Delete action cancelled");
+      },
+    });
   };
 
   const handleEdit = (employee) => {

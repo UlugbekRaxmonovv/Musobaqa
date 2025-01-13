@@ -21,7 +21,7 @@ function App() {
         <Route path="/" element={<Auth />} >
         <Route path="/dashboard" element={<Manager />} >
           <Route path="managers" element={<Managers />} />
-          <Route path="general" element={<General />} />
+          <Route path="general/:id" element={<General />} />
           <Route path="tasks" element={<Tasks />} />
           <Route path="employees" element={<Employees />} />
           <Route path="blockLanganar" element={<BlockLanganar />} />

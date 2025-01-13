@@ -32,6 +32,7 @@ const Manager = () => {
   const sidebarRef = useRef(null);
   const [user, setUser] = useState(null);
   let token = localStorage.getItem("x-auth-token")
+  let users = localStorage.getItem('user')
      useEffect(() =>{
      axios
      .get('/users',{
@@ -94,7 +95,7 @@ const Manager = () => {
       'General',
       '1',
       <LuLayoutDashboard  style={{ color: 'black', fontSize: '18px' }} />,
-      () => { navigate('/dashboard/general'); setCollapsed(true); }
+     
     ),
     getItem(
       'BlockLanganar',
@@ -103,14 +104,14 @@ const Manager = () => {
       () => { navigate('/dashboard/blockLanganar'); setCollapsed(!collapsed); }
     ),
     getItem(
-      'Managers',
+      'Employees',
       '5',
       <HiOutlineUsers  style={{ color:  'black', fontSize: '18px' }} />,
       () => { navigate('/dashboard/managers'); setCollapsed(!collapsed); }
     ),
    
     getItem(
-      'Employees',
+      'Managers',
       '3',
       <TbUsersPlus  style={{ color: 'black', fontSize: '18px' }} />,
       () => { navigate('/dashboard/employees'); setCollapsed(!collapsed); }
@@ -128,6 +129,16 @@ const Manager = () => {
   const userMenuItems = [
     {
       key: '1',
+      label: (
+        <div className="flex items-center flex-col">
+          <span className="text-sm">
+           {users}
+          </span>
+        </div>
+      ),
+    },
+    {
+      key: '2',
       label: (
         <div className="flex items-center flex-col">
           <span className="text-sm" onClick={logout}>
@@ -169,7 +180,7 @@ const Manager = () => {
   className="shadow-md" 
 >
   <div className="flex justify-center items-center">
-    <Link to="/dashboard/general" className="cursor-pointer">
+    <Link to="/dashboard/managers" className="cursor-pointer">
       <img
         src={logo}
         alt=""

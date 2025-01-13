@@ -9,6 +9,7 @@ const EmployeesComponents = () => {
   const [reflesh, setReflesh] = useState(false);
   const [openModal, setOpenModal] = useState(false);
   const [form] = Form.useForm();
+  const [searchdata, setSearchData] = useState("");
 
   const toggleModal = () => {
     setOpenModal(!openModal);
@@ -61,17 +62,19 @@ const EmployeesComponents = () => {
 
   return (
     <div className="">
-      <div className=" flex items-center justify-between py-8 px-2">
+      <div className="flex items-center justify-between gap-[20px] py-8 px-2">
         <Button
           onClick={toggleModal}
           type="primary"
           className=" add-user w-[152px]  h-[40px] bg-[#14B890] hover:!bg-[#129c7a]"
         >
           <FaPlus className="add-user-active !transform !transition-transform !duration-300 group-hover:!rotate-90 " />
-          Hodim qo’shish
+          Manager add
         </Button>
         <Input
           type="search"
+          value={searchdata}
+          onChange={(e) => setSearchData(e.target.value)}
           className="border border-gray-300 rounded-md px-4 py-2 w-full sm:w-64"
           placeholder="Поиск по фамилии"
           prefix={<SearchOutlined />}
@@ -164,7 +167,8 @@ const EmployeesComponents = () => {
         </Form>
       </Modal>
 
-      <TableComponents reflesh={reflesh} />
+      
+      <TableComponents reflesh={reflesh} searchdata={searchdata} />
     </div>
   );
 };

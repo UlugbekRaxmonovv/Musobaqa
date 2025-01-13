@@ -139,19 +139,19 @@ const Tasks = () => {
         </div>
     },
     {
-      title: 'Vazifa nomi',
+      title: 'Task name',
       dataIndex: 'name',
       key: 'name',
       render: (text) => <span className="font-medium text-gray-700">{text}</span>,
     },
     {
-      title: 'Vazifa turi',
+      title: 'Role',
       dataIndex: 'type',
       key: 'type',
       render: (text) => <span className="text-gray-500">{text}</span>,
     },
     {
-      title: 'Amallar',
+      title: 'Actions',
       key: 'actions',
       render: (_, record) => (
         <div className="flex items-center gap-4">
@@ -179,7 +179,7 @@ const Tasks = () => {
           onClick={handleAddTask}
         >
           <FaPlus className="add-user-active !transform !transition-transform !duration-300 group-hover:!rotate-90 " />
-          Hodim qo’shish
+           Task add
         </Button>
         <Input
           placeholder="Поиск по familiyasi"
@@ -203,7 +203,7 @@ const Tasks = () => {
       />
 
       <Modal
-        title={modalType === 'add' ? "Vazifa qo'shish" : "Vazifani o'zgartirish"}
+        title={modalType === 'add' ? "Task add" : "Task update"}
         open={isModalOpen}
         onOk={handleModalOk}
         onCancel={handleModalCancel}
