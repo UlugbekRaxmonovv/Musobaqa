@@ -13,8 +13,13 @@ const BlockLanganar = () => {
   const [searchValue, setSearchValue] = useState("");
   const [filteredData, setFilteredData] = useState([]);
   const [page, setPage] = useState(1);
-  const [pageSize] = useState(5);
+  const [pageSize, setPageSize] = useState(5);
   const [totalOrders, setTotalOrders] = useState(0);
+
+  const handlePageSizeChange = (value) => {
+    setPageSize(value);
+    setPage(1);
+  };
 
   const unblock = async (id) => {
     if (!id) return;
@@ -143,24 +148,27 @@ const BlockLanganar = () => {
         console.error("Token topilmadi! Iltimos, tizimga qayta kiring.");
         return;
       }
-
       try {
-        const response = await axios.get("/managers", {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
+        const response = await axios.get(
+          `/managers?_limit=${pageSize}&_page=${page}`,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
 
         const filteredData = response?.data?.filter((item) => !item.isActive);
         setData(filteredData);
         setFilteredData(filteredData);
+        setTotalOrders(response.headers["x-total-count"]);
       } catch (err) {
         console.error("Xatolik yuz berdi:", err);
       }
     };
 
     fetchTasks();
-  }, []);
+  }, [page, pageSize]);
 
   const handleSearch = (e) => {
     const value = e.target.value;
@@ -196,13 +204,37 @@ const BlockLanganar = () => {
           pagination={false}
         />
 
-        <Pagination
-          className="flex justify-center items-center mt-2"
-          pageSize={pageSize}
-          total={totalOrders}
-          current={page}
-          onChange={(newPage) => setPage(newPage)}
-        />
+        <div className="flex items-center justify-between mt-7">
+          <div>
+            <h2>
+              {pageSize * (page - 1) + 1}–
+              {Math.min(pageSize * page, totalOrders)}
+              из {totalOrders}
+            </h2>
+          </div>
+
+          <Pagination
+            className="flex justify-center items-center mt-2"
+            pageSize={pageSize}
+            total={totalOrders}
+            current={page}
+            onChange={(newPage) => setPage(newPage)}
+          />
+
+          <div>
+            <select
+              className="outline-none w-[120px] h-[40px] rounded-md"
+              onChange={(e) =>
+                handlePageSizeChange(parseInt(e.target.value, 10))
+              }
+              value={pageSize}
+            >
+              <option value="5">5 / стр.</option>
+              <option value="10">10 / стр.</option>
+              <option value="20">20 / стр.</option>
+            </select>
+          </div>
+        </div>
       </div>
     </div>
   );

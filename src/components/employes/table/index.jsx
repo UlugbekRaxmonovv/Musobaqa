@@ -227,8 +227,12 @@ const TableComponents = ({ reflesh, searchdata }) => {
 
       <div className="flex items-center justify-between mt-7">
         <div>
-          <h2>
-            {pageSize * (page - 1) + 1}–{Math.min(pageSize * page, totalOrders)}
+          <h2
+            className={`${
+              theme ? console.log("qora") : console.log("oq")
+            } font-bold`}
+          >
+            {pageSize * (page - 1) + 1}–{Math.min(pageSize * page, totalOrders)}{" "}
             из {totalOrders}
           </h2>
         </div>

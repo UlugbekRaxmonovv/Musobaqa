@@ -19,8 +19,14 @@ const Tasks = () => {
   const [search, setSearch] = useState("");
   const { theme } = useContext(Context);
   const [page, setPage] = useState(1);
-  const [pageSize] = useState(5);
+  const [pageSize, setPageSize] = useState(5);
   const [totalOrders, setTotalOrders] = useState(0);
+
+  const handlePageSizeChange = (value) => {
+    setPageSize(value);
+    setPage(1); 
+  };
+
   useEffect(() => {
     const fetchTasks = async () => {
       const token = localStorage.getItem("x-auth-token");
@@ -30,12 +36,16 @@ const Tasks = () => {
       }
 
       try {
-        const response = await axios.get("/tasks", {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
+        const response = await axios.get(
+          `/tasks?_limit=${pageSize}&_page=${page}`,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
         setData(response.data);
+        setTotalOrders(response.headers["x-total-count"]);
       } catch (err) {
         console.error("Xatolik yuz berdi:", err);
         message.error(err.response?.data || "Xatolik");
@@ -43,7 +53,7 @@ const Tasks = () => {
     };
 
     fetchTasks();
-  }, []);
+  }, [page, pageSize]);
 
   const handleAddTask = () => {
     setModalType("add");
@@ -221,13 +231,33 @@ const Tasks = () => {
         rowClassName={() => (theme ? "dark-row" : "light-row")}
       />
 
-      <Pagination
-        className="flex justify-center items-center mt-2"
-        pageSize={pageSize}
-        total={totalOrders}
-        current={page}
-        onChange={(newPage) => setPage(newPage)}
-      />
+      <div className="flex items-center justify-between mt-7">
+        <div>
+          <h2>
+            {pageSize * (page - 1) + 1}–{Math.min(pageSize * page, totalOrders)}
+            из {totalOrders}
+          </h2>
+        </div>
+        <Pagination
+          className="flex justify-center items-center mt-2"
+          pageSize={pageSize}
+          total={totalOrders}
+          current={page}
+          onChange={(newPage) => setPage(newPage)}
+        />
+
+        <div>
+          <select
+            className="outline-none w-[120px] h-[40px] rounded-md"
+            onChange={(e) => handlePageSizeChange(parseInt(e.target.value, 10))}
+            value={pageSize}
+          >
+            <option value="5">5 / стр.</option>
+            <option value="10">10 / стр.</option>
+            <option value="20">20 / стр.</option>
+          </select>
+        </div>
+      </div>
 
       <Modal
         title={modalType === "add" ? "Task add" : "Task update"}
