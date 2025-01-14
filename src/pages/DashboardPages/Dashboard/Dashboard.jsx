@@ -1,5 +1,4 @@
 import React, { useContext, useEffect, useState } from "react";
-
 import blockedimg from "../../../assets/images/blocked-users-img.png";
 import employesimg from "../../../assets/images/employes.webp";
 import managersimg from "../../../assets/images/manager-img.png";
@@ -7,10 +6,8 @@ import managerssssss from "../../../assets/images/managerssss.png";
 import tasks from "../../../assets/images/tasks.png";
 import { Doughnut } from "react-chartjs-2";
 import { Chart as ChartJS, ArcElement, Tooltip, Legend, Title } from "chart.js";
-
 import { Bar } from "react-chartjs-2";
 import { CategoryScale, LinearScale, BarElement } from "chart.js";
-// fetch
 import axios from "../../../api/index";
 import { Context } from "../../../components/darkMode/Context";
 
@@ -112,7 +109,6 @@ const Dashboard = () => {
     }
   };
 
-  // fetch employes
   const fetchEmployes = async () => {
     const token = localStorage.getItem("x-auth-token");
     if (!token) {
@@ -133,7 +129,6 @@ const Dashboard = () => {
     }
   };
 
-  // main fetch tasks
   const fetchTasksmain = async () => {
     const token = localStorage.getItem("x-auth-token");
     if (!token) {

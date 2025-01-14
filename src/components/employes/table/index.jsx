@@ -222,6 +222,9 @@ const TableComponents = ({ reflesh, searchdata }) => {
         pagination={false}
         className={theme ? "custom-table theme" : "custom-table"}
         rowClassName={() => (theme ? "dark-row" : "light-row")}
+        locale={{
+          emptyText: "Malumot topilmadi"
+        }}
       />
 
       {searchdata ? (

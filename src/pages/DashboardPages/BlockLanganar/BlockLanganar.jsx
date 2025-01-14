@@ -15,7 +15,7 @@ const BlockLanganar = () => {
   const [totalItems, setTotalItems] = useState(0);
 
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [modalType, setModalType] = useState(null); 
+  const [modalType, setModalType] = useState(null);
   const [selectedId, setSelectedId] = useState(null);
   const { theme } = useContext(Context);
 
@@ -136,18 +136,19 @@ const BlockLanganar = () => {
 
   return (
     <div
-      className={`py-8 px-2 min-h-[510px] ${
-        theme ? "bg-gray-900" : "bg-[rgb(244,241,236)]"
-      }`}
+      className={`${theme ? "bg-gray-900" : "bg-[rgb(244,241,236)]"} 
+          py-8 px-2 min-h-[100%] transition-all 
+          rounded-lg`}
     >
-      <Input
-        placeholder="Ismi bo'yicha qidirish"
-        prefix={<SearchOutlined />}
+      <input
+        placeholder="Search"
         value={searchValue}
         onChange={handleSearch}
-        className={`border px-4 py-2 w-full sm:w-64 ${
-          theme ? "bg-[#1f2937] text-white" : "bg-white"
-        }`}
+        className={`border rounded-md px-4 py-2 w-full sm:w-64 outline-none ${
+          theme
+            ? "border-[#4b5563] bg-[#1f2937] text-white placeholder-white"
+            : "border-gray-300 placeholder-gray-400"
+        } focus:outline-none`}
       />
       <Table
         columns={columns}
@@ -155,6 +156,11 @@ const BlockLanganar = () => {
         rowKey="id"
         pagination={false}
         style={{ marginTop: 20 }}
+        className={theme ? "custom-table theme" : "custom-table"}
+        rowClassName={() => (theme ? "dark-row" : "light-row")}
+        locale={{
+          emptyText: "Malumot topilmadi",
+        }}
       />
       {searchValue ? (
         ""

@@ -43,8 +43,9 @@ const Tasks = () => {
             Authorization: `Bearer ${token}`,
           },
         });
-        let result = response.data.filter((item) => item.type)
-        setData(result);
+        let str = response.data.filter((itm) => itm.type)
+        setData(str);
+        setTotalOrders(response.headers["x-total-count"]);
       } catch (err) {
         console.error("Xatolik yuz berdi:", err);
         message.error(err.response?.data || "Xatolik");
@@ -101,6 +102,7 @@ const Tasks = () => {
       message.warning("Iltimos, barcha maydonlarni to'ldiring!");
       return;
     }
+
 
     try {
       if (modalType === "add") {
@@ -228,7 +230,8 @@ const Tasks = () => {
         rowClassName={() => (theme ? "dark-row" : "light-row")}
       />
 
-      {search ? (
+
+{search ? (
         ""
       ) : (
         <div className="flex items-center justify-between mt-7">

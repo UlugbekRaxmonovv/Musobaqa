@@ -52,7 +52,7 @@ const Manager = () => {
 
   const logout = () => {
     localStorage.removeItem("x-auth-token");
-    navigate("/signin");
+    navigate("/");
   };
 
   useEffect(() => {

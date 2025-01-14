@@ -15,7 +15,7 @@ function App() {
     <>
       <Toaster position="top-center" reverseOrder={false} />
       <Routes>
-        <Route path="/signin" element={<Login />} />
+        <Route path="/" element={<Login />} />
         <Route path="/" element={<Auth />}>
           <Route path="/dashboard" element={<Manager />}>
             <Route path="statestika" element={<Dashboard />} />
