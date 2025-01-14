@@ -15,7 +15,7 @@ const BlockLanganar = () => {
   const [totalOrders, setTotalOrders] = useState(0);
 
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [modalType, setModalType] = useState(null); // "unblock" or "delete"
+  const [modalType, setModalType] = useState(null); 
   const [selectedId, setSelectedId] = useState(null);
   const { theme } = useContext(Context);
 
