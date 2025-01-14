@@ -3,6 +3,7 @@ import React, { useContext, useEffect, useState } from "react";
 import blockedimg from "../../../assets/images/blocked-users-img.png";
 import employesimg from "../../../assets/images/employes.webp";
 import managersimg from "../../../assets/images/manager-img.png";
+import managerssssss from "../../../assets/images/managerssss.png";
 import tasks from "../../../assets/images/tasks.png";
 import { Doughnut } from "react-chartjs-2";
 import { Chart as ChartJS, ArcElement, Tooltip, Legend, Title } from "chart.js";
@@ -171,56 +172,56 @@ const Dashboard = () => {
     >
       <div className="status-header mt-[40px] flex items-center justify-center gap-[50px]">
        
-        <div className="managers flex flex-col items-center justify-center gap-[20px]  w-[217px] h-[130px] bg-[#fff] rounded-[10px] ">
-          <h2 className="text-[#0f123f] font-[500] text-[18px] "> Managers</h2>
+        <div className={`managers flex flex-col items-center justify-center gap-[20px]  w-[217px] h-[130px] ${theme ? "bg-[#1f2937]" : "bg-[#fff]"} rounded-[10px] `}>
+          <h2 className={`  ${theme ? "text-[#ffff]" : "text-[#0f123f]"} font-[500] text-[18px] `}> Managers</h2>
           <div className="flex items-center justify-center gap-[30px]">
-            <img className="w-[50px] h-[50px]" src={managersimg} alt="" />
-            <h3 className="text-[#0f123f] font-[600] text-[30px]">
+            <img className="w-[50px] h-[50px]" src={managerssssss} alt="" />
+            <h3 className={`${theme ? "text-[#ffff]" : "text-[#0f123f]"} font-[600] text-[30px]`}>
               {managers ? managers : "0"}
             </h3>
           </div>
         </div>
 
         
-        <div className="managers flex flex-col items-center justify-center gap-[20px]  w-[217px] h-[130px] bg-[#fff] rounded-[10px] ">
-          <h2 className="text-[#0f123f] font-[500] text-[18px] "> Active Managers</h2>
+        <div className={`managers flex flex-col items-center justify-center gap-[20px]  w-[217px] h-[130px] ${theme ? "bg-[#1f2937]" : "bg-[#fff]"} rounded-[10px] `}>
+          <h2 className={`  ${theme ? "text-[#ffff]" : "text-[#0f123f]"} font-[500] text-[18px] `}> Active Managers</h2>
           <div className="flex items-center justify-center gap-[30px]">
             <img className="w-[50px] h-[50px]" src={managersimg} alt="" />
-            <h3 className="text-[#0f123f] font-[600] text-[30px]">
+            <h3 className={`${theme ? "text-[#ffff]" : "text-[#0f123f]"} font-[600] text-[30px]`}>
               {managers- blocked ?managers- blocked   : "0"}
             </h3>
           </div>
         </div>
           
-        <div className="blocked flex flex-col items-center justify-center gap-[20px]  w-[217px] h-[130px] bg-[#fff] rounded-[10px] ">
-          <h2 className="text-[#0f123f] font-[500] text-[18px] ">
+        <div className={`managers flex flex-col items-center justify-center gap-[20px]  w-[217px] h-[130px] ${theme ? "bg-[#1f2937]" : "bg-[#fff]"} rounded-[10px] `}>
+          <h2 className={`  ${theme ? "text-[#ffff]" : "text-[#0f123f]"} font-[500] text-[18px] `}>
             {" "}
             Blocked Managers
           </h2>
           <div className="flex items-center justify-center gap-[30px]">
             <img className="w-[50px] h-[50px]" src={blockedimg} alt="" />
-            <h3 className="text-[#0f123f] font-[600] text-[30px]">
+            <h3 className={`${theme ? "text-[#ffff]" : "text-[#0f123f]"} font-[600] text-[30px]`}>
               {blocked ? blocked : "0"}
             </h3>
           </div>
         </div>
 
 
-        <div className="employes flex flex-col items-center justify-center gap-[20px]  w-[217px] h-[130px] bg-[#fff] rounded-[10px] ">
-          <h2 className="text-[#0f123f] font-[500] text-[18px] "> Employes</h2>
+        <div className={`managers flex flex-col items-center justify-center gap-[20px]  w-[217px] h-[130px] ${theme ? "bg-[#1f2937]" : "bg-[#fff]"} rounded-[10px] `}>
+          <h2 className={`  ${theme ? "text-[#ffff]" : "text-[#0f123f]"} font-[500] text-[18px] `}> Employes</h2>
           <div className="flex items-center justify-center gap-[30px]">
             <img className="w-[50px] h-[50px]" src={employesimg} alt="" />
-            <h3 className="text-[#0f123f] font-[600] text-[30px]">
+            <h3 className={`${theme ? "text-[#ffff]" : "text-[#0f123f]"} font-[600] text-[30px]`}>
               {employes ? employes : "0"}
             </h3>
           </div>
         </div>
 
-        <div className="tasks flex flex-col items-center justify-center gap-[20px]  w-[217px] h-[130px] bg-[#fff] rounded-[10px] ">
-          <h2 className="text-[#0f123f] font-[500] text-[18px] "> Tasks</h2>
+        <div className={`managers flex flex-col items-center justify-center gap-[20px]  w-[217px] h-[130px] ${theme ? "bg-[#1f2937]" : "bg-[#fff]"} rounded-[10px] `}>
+          <h2 className={`  ${theme ? "text-[#ffff]" : "text-[#0f123f]"} font-[500] text-[18px] `}> Tasks</h2>
           <div className="flex items-center justify-center gap-[30px]">
             <img className="w-[50px] h-[50px]" src={tasks} alt="" />
-            <h3 className="text-[#0f123f] font-[600] text-[30px]">{task ? task : "0"}</h3>
+            <h3  className={`${theme ? "text-[#ffff]" : "text-[#0f123f]"} font-[600] text-[30px]`}>{task ? task : "0"}</h3>
           </div>
         </div>
       </div>
