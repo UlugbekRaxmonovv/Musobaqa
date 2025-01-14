@@ -1,22 +1,17 @@
 import React, { useContext, useEffect, useState } from "react";
-import { Modal, Button, Input, Form } from "antd";
-import axios from '../../../api/index'
+import { Modal, Button, Input, message } from "antd";
+import axios from "../../../api/index";
 import { useParams } from "react-router-dom";
-import { Context } from "../../../components/darkMode/Context"; 
+import { Context } from "../../../components/darkMode/Context";
 
 const General = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [data, setData] = useState([]);
+  const [data, setData] = useState([]); 
   const [managers, setManagers] = useState({});
+  const [newTask, setNewTask] = useState(""); 
   const { theme } = useContext(Context);
-  const [error, setError] = useState(null);
-  const [selectedTasks, setSelectedTasks] = useState([]);
-let obj = Object.assign({},selectedTasks)
-console.log(obj);
-
-  
+  const [datas, setDatas] = useState([]);
   const { id } = useParams();
-
   useEffect(() => {
     const fetchManagers = async () => {
       const token = localStorage.getItem("x-auth-token");
@@ -32,6 +27,7 @@ console.log(obj);
           },
         });
         setManagers(response.data);
+        setData(response.data.tasks || []);
       } catch (err) {
         console.error("Xatolik yuz berdi:", err);
         message.error(err.response?.data || "Xatolik");
@@ -40,6 +36,14 @@ console.log(obj);
 
     fetchManagers();
   }, [id]);
+
+  const showModal = () => {
+    setIsModalOpen(true);
+  };
+
+  const handleCancel = () => {
+    setIsModalOpen(false);
+  };
 
   useEffect(() => {
     const fetchTasks = async () => {
@@ -50,38 +54,29 @@ console.log(obj);
       }
 
       try {
-        const response = await axios.get("/tasks", {
+        const response = await axios.get(`/tasks`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
         });
-        setData(response.data);
+        let result = response.data.filter((item) => item.type !== item.type)
+        
+        setDatas(result);
       } catch (err) {
         console.error("Xatolik yuz berdi:", err);
-        setError(err.response?.data || "Xatolik");
+        message.error(err.response?.data || "Xatolik");
       }
     };
 
     fetchTasks();
   }, []);
 
-  const showModal = () => {
-    setIsModalOpen(true);
-  };
+  const handleAddTask = async () => {
+    if (newTask.trim() === "") {
+      message.error("Task nomini kiriting!");
+      return;
+    }
 
-  const handleCancel = () => {
-    setIsModalOpen(false);
-  };
-
-  const handleTaskSelection = (taskId) => {
-    setSelectedTasks((prev) =>
-      prev.includes(taskId)
-        ? prev.filter((id) => id !== taskId)
-        : [...prev, taskId]
-    );
-  };
-
-  const handleSaveTasks = async () => {
     const token = localStorage.getItem("x-auth-token");
     if (!token) {
       console.error("Token topilmadi! Iltimos, tizimga qayta kiring.");
@@ -90,8 +85,8 @@ console.log(obj);
 
     try {
       const response = await axios.post(
-        `/managers/${id}`,
-        { tasks: selectedTasks },
+        `/tasks`,
+        { name: newTask },
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -100,27 +95,34 @@ console.log(obj);
       );
 
       if (response.status === 201) {
-        message.success("Tasks successfully added!");
-        setIsModalOpen(false);
-        setSelectedTasks([]); 
+        message.success("Task muvaffaqiyatli qo'shildi!");
+        const newTaskData = response.data;
+
+
+        setManagers((prev) => ({
+          ...prev,
+          tasks: [...(prev.tasks || []), newTaskData],
+        }));
+        setData((prev) => [...prev, newTaskData]); 
+        setNewTask("");
       }
     } catch (error) {
-      console.error(error);
-      message.error("Failed to save tasks.");
+      console.error("Task qo'shishda xatolik yuz berdi:", error);
+      message.error("Task qo'shishda xatolik.");
     }
   };
 
-  return (
-    <div
-      className={`${theme ? "bg-gray-900" : "bg-[rgb(244,241,236)]"} 
-          p-4 min-h-[100%] transition-all 
-          rounded-lg`}
+
+  if(id){
+    return (
+      <div
+      className={`${
+        theme ? "bg-gray-900" : "bg-[rgb(244,241,236)]"
+      } p-4 min-h-[100%] transition-all rounded-lg`}
     >
       <div
         className={`max-w-md shadow-xl rounded-lg overflow-hidden sm:max-w-xl ${
-          theme
-            ? "bg-[#1f2937] text-white"
-            : "bg-white text-gray-800"
+          theme ? "bg-[#1f2937] text-white" : "bg-white text-gray-800"
         } border-[1px] border-[rgb(244,241,236)]`}
       >
         <div className="px-6 py-4">
@@ -130,8 +132,8 @@ console.log(obj);
           <div className="mt-6">
             <h3 className="text-lg font-medium mb-3">Hunarlari (Tasks)</h3>
             <ul className="space-y-2">
-              {managers?.tasks?.length > 0 ? (
-                managers.tasks.map((item) => (
+              {data.length > 0 ? (
+                data.map((item) => (
                   <li
                     key={item.id}
                     className={`flex items-center justify-between p-3 rounded-md shadow-sm transition ${
@@ -147,6 +149,25 @@ console.log(obj);
               ) : (
                 <li className="text-gray-500">No tasks available</li>
               )}
+             {
+              datas ? <>
+               {
+                 datas.map((item) => (
+                  <li
+                    key={item.id}
+                    className={`flex items-center justify-between p-3 rounded-md shadow-sm transition ${
+                      theme
+                        ? "bg-[#374151] text-gray-300"
+                        : "bg-gray-50 text-gray-700"
+                    } hover:shadow-md border border-[rgb(244,241,236)]`}
+                  >
+                    <span className="font-medium">{item.name}</span>
+                  </li>
+                ))
+              }
+              </>
+              :""
+             }
             </ul>
           </div>
 
@@ -164,31 +185,55 @@ console.log(obj);
           <Modal
             title="Yangi Task qo'shish"
             open={isModalOpen}
-            onOk={handleSaveTasks}
             onCancel={handleCancel}
-            okText="Saqlash"
-            cancelText="Bekor qilish"
+            footer={[
+              <Button key="cancel" onClick={handleCancel}>
+                Bekor qilish
+              </Button>,
+              <Button key="submit" type="primary" onClick={handleAddTask}>
+                Task qo'shish
+              </Button>,
+            ]}
           >
             <div className="space-y-3">
-              {data?.map((item) => (
-                <div
-                  key={item.id}
-                  className="flex items-center justify-between p-3 rounded-lg shadow-md transition bg-gray-50 hover:bg-gray-100 text-gray-700 border border-[rgb(244,241,236)]"
-                >
-                  <span>{item.name}</span>
-                  <Input
-                    type="checkbox"
-                    className="w-5 h-5 rounded text-blue-500 border-gray-300 focus:ring-blue-500"
-                    onChange={() => handleTaskSelection(item)}
-                    checked={selectedTasks.includes(item.id)}
-                  />
-                </div>
-              ))}
+              <Input
+                placeholder="Task nomini kiriting"
+                value={newTask}
+                onChange={(e) => setNewTask(e.target.value)}
+              />
             </div>
           </Modal>
         </div>
       </div>
     </div>
+    )
+  }
+  return (
+<>
+<div
+  className={`${
+    theme ? "bg-gray-900 text-gray-200" : "bg-[rgb(244,241,236)] text-gray-900"
+  } p-4 min-h-[100%] transition-all rounded-lg`}
+>
+  <div className="flex justify-center items-center flex-col h-full">
+    <h1
+      className={`text-2xl font-bold ${
+        theme ? "text-white" : "text-gray-900"
+      }`}
+    >
+      General Page (No ID)
+    </h1>
+    <p
+      className={`text-lg mt-2 ${
+        theme ? "text-gray-400" : "text-gray-700"
+      }`}
+    >
+      ID mavjud emas. Umumiy ma'lumotlar ko'rsatilmoqda.
+    </p>
+  </div>
+</div>
+
+</>
   );
 };
 

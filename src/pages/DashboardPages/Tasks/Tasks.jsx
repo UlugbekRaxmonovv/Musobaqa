@@ -35,7 +35,8 @@ const Tasks = () => {
             Authorization: `Bearer ${token}`,
           },
         });
-        setData(response.data);
+        let result = response.data.filter((item) => item.type)
+        setData(result);
       } catch (err) {
         console.error("Xatolik yuz berdi:", err);
         message.error(err.response?.data || "Xatolik");
