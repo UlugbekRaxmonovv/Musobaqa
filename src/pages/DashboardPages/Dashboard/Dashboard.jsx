@@ -29,7 +29,7 @@ const Dashboard = () => {
   const [filteredData, setFilteredData] = useState([]);
   const [managers, setManagers] = useState(0);
   const [employes, setEmployes] = useState(0);
-  const [task , setTask] = useState(0)
+  const [task, setTask] = useState(0);
 
   const { theme } = useContext(Context);
 
@@ -37,7 +37,7 @@ const Dashboard = () => {
     labels: ["Bloced", "Active"],
     datasets: [
       {
-        data: [blocked, managers-blocked],
+        data: [blocked, managers - blocked],
         backgroundColor: ["#fe7a79", "#7376a0"],
         hoverOffset: 4,
       },
@@ -133,7 +133,6 @@ const Dashboard = () => {
     }
   };
 
-
   // main fetch tasks
   const fetchTasksmain = async () => {
     const token = localStorage.getItem("x-auth-token");
@@ -155,13 +154,10 @@ const Dashboard = () => {
     }
   };
 
-
-
-
   useEffect(() => {
     fetchTasks();
     fetchEmployes();
-    fetchTasksmain()
+    fetchTasksmain();
   }, []);
 
   return (
@@ -171,57 +167,128 @@ const Dashboard = () => {
         rounded-lg`}
     >
       <div className="status-header mt-[40px] flex items-center justify-center gap-[50px]">
-       
-        <div className={`managers flex flex-col items-center justify-center gap-[20px]  w-[217px] h-[130px] ${theme ? "bg-[#1f2937]" : "bg-[#fff]"} rounded-[10px] `}>
-          <h2 className={`  ${theme ? "text-[#ffff]" : "text-[#0f123f]"} font-[500] text-[18px] `}> Managers</h2>
+        <div
+          className={`managers flex flex-col items-center justify-center gap-[20px]  w-[217px] h-[130px] ${
+            theme ? "bg-[#1f2937]" : "bg-[#fff]"
+          } rounded-[10px] `}
+        >
+          <h2
+            className={`  ${
+              theme ? "text-[#ffff]" : "text-[#0f123f]"
+            } font-[500] text-[18px] `}
+          >
+            {" "}
+            Managers
+          </h2>
           <div className="flex items-center justify-center gap-[30px]">
             <img className="w-[50px] h-[50px]" src={managerssssss} alt="" />
-            <h3 className={`${theme ? "text-[#ffff]" : "text-[#0f123f]"} font-[600] text-[30px]`}>
+            <h3
+              className={`${
+                theme ? "text-[#ffff]" : "text-[#0f123f]"
+              } font-[600] text-[30px]`}
+            >
               {managers ? managers : "0"}
             </h3>
           </div>
         </div>
 
-        
-        <div className={`managers flex flex-col items-center justify-center gap-[20px]  w-[217px] h-[130px] ${theme ? "bg-[#1f2937]" : "bg-[#fff]"} rounded-[10px] `}>
-          <h2 className={`  ${theme ? "text-[#ffff]" : "text-[#0f123f]"} font-[500] text-[18px] `}> Active Managers</h2>
+        <div
+          className={`managers flex flex-col items-center justify-center gap-[20px]  w-[217px] h-[130px] ${
+            theme ? "bg-[#1f2937]" : "bg-[#fff]"
+          } rounded-[10px] `}
+        >
+          <h2
+            className={`  ${
+              theme ? "text-[#ffff]" : "text-[#0f123f]"
+            } font-[500] text-[18px] `}
+          >
+            {" "}
+            Active Managers
+          </h2>
           <div className="flex items-center justify-center gap-[30px]">
             <img className="w-[50px] h-[50px]" src={managersimg} alt="" />
-            <h3 className={`${theme ? "text-[#ffff]" : "text-[#0f123f]"} font-[600] text-[30px]`}>
-              {managers- blocked ?managers- blocked   : "0"}
+            <h3
+              className={`${
+                theme ? "text-[#ffff]" : "text-[#0f123f]"
+              } font-[600] text-[30px]`}
+            >
+              {managers - blocked ? managers - blocked : "0"}
             </h3>
           </div>
         </div>
-          
-        <div className={`managers flex flex-col items-center justify-center gap-[20px]  w-[217px] h-[130px] ${theme ? "bg-[#1f2937]" : "bg-[#fff]"} rounded-[10px] `}>
-          <h2 className={`  ${theme ? "text-[#ffff]" : "text-[#0f123f]"} font-[500] text-[18px] `}>
+
+        <div
+          className={`managers flex flex-col items-center justify-center gap-[20px]  w-[217px] h-[130px] ${
+            theme ? "bg-[#1f2937]" : "bg-[#fff]"
+          } rounded-[10px] `}
+        >
+          <h2
+            className={`  ${
+              theme ? "text-[#ffff]" : "text-[#0f123f]"
+            } font-[500] text-[18px] `}
+          >
             {" "}
             Blocked Managers
           </h2>
           <div className="flex items-center justify-center gap-[30px]">
             <img className="w-[50px] h-[50px]" src={blockedimg} alt="" />
-            <h3 className={`${theme ? "text-[#ffff]" : "text-[#0f123f]"} font-[600] text-[30px]`}>
+            <h3
+              className={`${
+                theme ? "text-[#ffff]" : "text-[#0f123f]"
+              } font-[600] text-[30px]`}
+            >
               {blocked ? blocked : "0"}
             </h3>
           </div>
         </div>
 
-
-        <div className={`managers flex flex-col items-center justify-center gap-[20px]  w-[217px] h-[130px] ${theme ? "bg-[#1f2937]" : "bg-[#fff]"} rounded-[10px] `}>
-          <h2 className={`  ${theme ? "text-[#ffff]" : "text-[#0f123f]"} font-[500] text-[18px] `}> Employes</h2>
+        <div
+          className={`managers flex flex-col items-center justify-center gap-[20px]  w-[217px] h-[130px] ${
+            theme ? "bg-[#1f2937]" : "bg-[#fff]"
+          } rounded-[10px] `}
+        >
+          <h2
+            className={`  ${
+              theme ? "text-[#ffff]" : "text-[#0f123f]"
+            } font-[500] text-[18px] `}
+          >
+            {" "}
+            Employes
+          </h2>
           <div className="flex items-center justify-center gap-[30px]">
             <img className="w-[50px] h-[50px]" src={employesimg} alt="" />
-            <h3 className={`${theme ? "text-[#ffff]" : "text-[#0f123f]"} font-[600] text-[30px]`}>
+            <h3
+              className={`${
+                theme ? "text-[#ffff]" : "text-[#0f123f]"
+              } font-[600] text-[30px]`}
+            >
               {employes ? employes : "0"}
             </h3>
           </div>
         </div>
 
-        <div className={`managers flex flex-col items-center justify-center gap-[20px]  w-[217px] h-[130px] ${theme ? "bg-[#1f2937]" : "bg-[#fff]"} rounded-[10px] `}>
-          <h2 className={`  ${theme ? "text-[#ffff]" : "text-[#0f123f]"} font-[500] text-[18px] `}> Tasks</h2>
+        <div
+          className={`managers flex flex-col items-center justify-center gap-[20px]  w-[217px] h-[130px] ${
+            theme ? "bg-[#1f2937]" : "bg-[#fff]"
+          } rounded-[10px] `}
+        >
+          <h2
+            className={`  ${
+              theme ? "text-[#ffff]" : "text-[#0f123f]"
+            } font-[500] text-[18px] `}
+          >
+            {" "}
+            Tasks
+          </h2>
           <div className="flex items-center justify-center gap-[30px]">
             <img className="w-[50px] h-[50px]" src={tasks} alt="" />
-            <h3  className={`${theme ? "text-[#ffff]" : "text-[#0f123f]"} font-[600] text-[30px]`}>{task ? task : "0"}</h3>
+            <h3
+              className={`${
+                theme ? "text-[#ffff]" : "text-[#0f123f]"
+              } font-[600] text-[30px]`}
+            >
+              {task ? task : "0"}
+            </h3>
           </div>
         </div>
       </div>
