@@ -1,8 +1,8 @@
 import React, { useContext, useEffect, useState } from "react";
 import { Modal, Button, Input, Form } from "antd";
-import axios from "../../api/index";
+import axios from '../../../api/index'
 import { useParams } from "react-router-dom";
-import { Context } from "../../components/darkMode/Context";
+import { Context } from "../../../components/darkMode/Context"; 
 
 const General = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);

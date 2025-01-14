@@ -8,27 +8,24 @@ import tasks from "../../assets/images/tasks.png";
 import { Doughnut } from "react-chartjs-2";
 import { Chart as ChartJS, ArcElement, Tooltip, Legend, Title } from "chart.js";
 
-import { Bar } from 'react-chartjs-2';
-import {
-  
+import { Bar } from "react-chartjs-2";
+import { CategoryScale, LinearScale, BarElement } from "chart.js";
+
+ChartJS.register(
   CategoryScale,
   LinearScale,
   BarElement,
-  
-  
- 
-} from 'chart.js';
-
-// Chart.js komponentlarini ro'yxatdan o'tkazish
-ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
-// Chart.js komponentlarini ro'yxatdan o'tkazish
+  Title,
+  Tooltip,
+  Legend
+);
 ChartJS.register(ArcElement, Tooltip, Legend, Title);
 
 const Dashboard = () => {
   const { theme } = useContext(Context);
 
   const data = {
-    labels: [ "Bloced","Active"],
+    labels: ["Bloced", "Active"],
     datasets: [
       {
         label: "Bloked or Active",
@@ -52,22 +49,21 @@ const Dashboard = () => {
     },
   };
 
-
   const data2 = {
-    labels: ['Yanvar', 'Fevral', 'Mart', 'Aprel', 'May', 'Iyun'],
+    labels: ["Yanvar", "Fevral", "Mart", "Aprel", "May", "Iyun"],
     datasets: [
       {
-        label: '2024 Yil',
+        label: "2024 Yil",
         data: [65, 59, 80, 81, 56, 55],
-        backgroundColor: 'rgba(75, 192, 192, 0.2)',
-        borderColor: 'rgba(75, 192, 192, 1)',
+        backgroundColor: "rgba(75, 192, 192, 0.2)",
+        borderColor: "rgba(75, 192, 192, 1)",
         borderWidth: 1,
       },
       {
-        label: '2023 Yil',
+        label: "2023 Yil",
         data: [28, 48, 40, 19, 86, 27],
-        backgroundColor: 'rgba(255, 99, 132, 0.2)',
-        borderColor: 'rgba(255, 99, 132, 1)',
+        backgroundColor: "rgba(255, 99, 132, 0.2)",
+        borderColor: "rgba(255, 99, 132, 1)",
         borderWidth: 1,
       },
     ],
@@ -76,21 +72,14 @@ const Dashboard = () => {
     responsive: true,
     plugins: {
       legend: {
-        position: 'top', // Legendni yuqoriga joylash
+        position: "top", 
       },
       title: {
         display: true,
-        text: 'Bar Diagrammasi Misoli', // Diagramma sarlavhasi
+        text: "Bar Diagrammasi Misoli", 
       },
     },
   };
-
-
-
-
-
-
-
 
   return (
     <div
@@ -133,16 +122,12 @@ const Dashboard = () => {
             <h3 className="text-[#0f123f] font-[600] text-[30px]">2</h3>
           </div>
         </div>
-
-
       </div>
 
       <div className="chartjs mt-[30px] flex items-center justify-between">
-
         <div className=" w-[800px] h-[400px]">
-        <Bar data={data2} options={options2} />
+          <Bar data={data2} options={options2} />
         </div>
-
 
         <div className="w-[300px] h-[300px]">
           <Doughnut data={data} options={options} />

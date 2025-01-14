@@ -1,22 +1,20 @@
 import React, { useState, useEffect, useRef, useContext } from 'react';
-import { BarChartOutlined, CarFilled, CarOutlined, CarryOutOutlined, SettingOutlined, UserOutlined } from '@ant-design/icons';
+import {UserOutlined } from '@ant-design/icons';
 import { Avatar, Layout, Menu, Dropdown, Space} from 'antd';
 import { Link, useNavigate } from 'react-router-dom';
-import DashboardContent from '../../../components/content/Content'; 
-import { BsCart } from 'react-icons/bs';
+import DashboardContent from '../../components/content/Content'; 
 import { FiMenu } from 'react-icons/fi';
 const { Header, Sider } = Layout;
-import logo from  '../../../assets/images/logo.png'
-import logo1 from  '../../../assets/images/logo1.svg'
-import { VscTasklist } from 'react-icons/vsc';
-import { MdAddTask, MdOutlineAddTask } from 'react-icons/md';
+import logo from  '../../assets/images/logo.png'
+import logo1 from  '../../assets/images/logo1.svg'
+import {MdOutlineAddTask } from 'react-icons/md';
 import { IoMdCheckboxOutline } from 'react-icons/io';
 import { TbUsersPlus } from 'react-icons/tb';
 import { LuLayoutDashboard } from 'react-icons/lu';
 import { HiOutlineUsers } from 'react-icons/hi';
-import axios from '../../../api/index';
+import axios from  '../../api/index'
 import { RiMoonLine, RiSunLine } from 'react-icons/ri';
-import { Context } from '../../../components/darkMode/Context';
+import { Context } from '../../components/darkMode/Context'; 
 import { TfiStatsUp } from 'react-icons/tfi';
 
 function getItem(label, key, icon, onClick) {

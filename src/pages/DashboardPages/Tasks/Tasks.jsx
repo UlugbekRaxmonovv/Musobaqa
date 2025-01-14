@@ -1,10 +1,10 @@
 import React, { useContext, useEffect, useState } from "react";
 import { Modal, Input, Button, Select, message, Table, Pagination } from "antd";
-import axios from "../../api/index";
+import axios from '../../../api/index'
 import { CiEdit } from "react-icons/ci";
 import { RiDeleteBin7Line } from "react-icons/ri";
 import { FaPlus } from "react-icons/fa6";
-import { Context } from "../../components/darkMode/Context";
+import { Context } from "../../../components/darkMode/Context"; 
 
 const { Option } = Select;
 

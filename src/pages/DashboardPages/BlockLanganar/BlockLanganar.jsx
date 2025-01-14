@@ -1,11 +1,10 @@
 import React, { useContext, useEffect, useState } from "react";
 import { Button, Input, Modal, Table, Dropdown, Pagination } from "antd";
-import { FaPlus } from "react-icons/fa6";
 import { CiEdit } from "react-icons/ci";
 import { RiDeleteBin7Line } from "react-icons/ri";
 import { SearchOutlined } from "@ant-design/icons";
-import axios from "../../api/index";
-import { Context } from "../../components/darkMode/Context";
+import axios from '../../../api/index'
+import { Context } from "../../../components/darkMode/Context"; 
 
 const BlockLanganar = () => {
   const [data, setData] = useState([]);
@@ -16,7 +15,7 @@ const BlockLanganar = () => {
   const [totalOrders, setTotalOrders] = useState(0);
 
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [modalType, setModalType] = useState(null); // "unblock" or "delete"
+  const [modalType, setModalType] = useState(null); 
   const [selectedId, setSelectedId] = useState(null);
   const { theme } = useContext(Context);
 
