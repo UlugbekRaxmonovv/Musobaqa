@@ -3,7 +3,7 @@ import General from "./pages/DashboardPages/General/General";
 import Tasks from "./pages/DashboardPages/Tasks/Tasks"; 
 import Employees from "./pages/DashboardPages/Employees/Employees"; 
 import BlockLanganar from "./pages/DashboardPages/BlockLanganar/BlockLanganar"; 
-import Managers from "./pages/DashboardPages/Managers/Managers.JSX";   
+import Managers from "./pages/DashboardPages/Managers/Managers.jsx";   
 import "./App.css";
 import Auth from "./pages/Auth/Auth";
 import Login from "./pages/Login/Login";
