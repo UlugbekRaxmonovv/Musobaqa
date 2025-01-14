@@ -137,7 +137,7 @@ const Manager = () => {
         style={{ color: theme ? "white" : "black", fontSize: "18px" }}
       />,
       () => {
-        navigate("/dashboard/managers");
+        navigate("/dashboard/employees");
         setCollapsed(!collapsed);
       }
     ),
@@ -149,7 +149,7 @@ const Manager = () => {
         style={{ color: theme ? "white" : "black", fontSize: "18px" }}
       />,
       () => {
-        navigate("/dashboard/employees");
+        navigate("/dashboard/managers");
         setCollapsed(!collapsed);
       }
     ),
