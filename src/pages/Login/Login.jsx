@@ -23,7 +23,7 @@ const Login = () => {
         localStorage.setItem('user',response.data?.user?.email)
         toast.success("Muvaffaqiyatli kirildi");
         console.log(response.data?.accessToken);
-        navigate("/dashboard/status");
+        navigate("/dashboard/statestika");
       } else {
         toast.error("Login yoki parol notog'ri");
       }
