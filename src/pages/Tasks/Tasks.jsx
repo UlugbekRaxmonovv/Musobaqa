@@ -222,9 +222,7 @@ const Tasks = () => {
 
       <Table
         columns={columns}
-        dataSource={data.filter((item) =>
-          item.name.toLowerCase().includes(search.toLowerCase())
-        )}
+        dataSource={data}
         rowKey="id"
         pagination={false}
         className={theme ? "custom-table theme" : "custom-table"}
