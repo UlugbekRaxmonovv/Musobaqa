@@ -20,7 +20,7 @@ function App() {
           <Route path="/dashboard" element={<Manager />}>
             <Route path="statestika" element={<Dashboard />} />
             <Route path="managers" element={<Managers />} />
-            <Route path="general/:id" element={<General />} />
+            <Route path="general/:id?" element={<General />} />
             <Route path="tasks" element={<Tasks />} />
             <Route path="employees" element={<Employees />} />
             <Route path="blockLanganar" element={<BlockLanganar />} />
