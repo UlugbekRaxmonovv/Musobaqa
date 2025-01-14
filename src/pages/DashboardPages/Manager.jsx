@@ -262,7 +262,7 @@ const Manager = () => {
               theme ? "bg-[#1f2937] border-gray-700" : "bg-[rgb(244,241,236)]"
             }`}
           >
-            <div className="flex justify-between items-center">
+            <div className="flex justify-between items-center h-full">
               <div className="flex items-center gap-2 ">
                 <div
                   className={`${
