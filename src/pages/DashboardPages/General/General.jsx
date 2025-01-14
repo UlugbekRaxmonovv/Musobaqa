@@ -3,6 +3,7 @@ import { Modal, Button, Input, message } from "antd";
 import axios from "../../../api/index";
 import { useParams } from "react-router-dom";
 import { Context } from "../../../components/darkMode/Context";
+import NoData from "../../../components/no-data";
 
 const General = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -212,23 +213,11 @@ const General = () => {
           theme
             ? "bg-gray-900 text-gray-200"
             : "bg-[rgb(244,241,236)] text-gray-900"
-        } p-4 min-h-[100%] transition-all rounded-lg`}
+        } p-4 min-h-[100%] transition-all rounded-lg flex items-center justify-center`}
       >
-        <div className="flex justify-center items-center flex-col h-full">
-          <h1
-            className={`text-2xl font-bold ${
-              theme ? "text-white" : "text-gray-900"
-            }`}
-          >
-            General Page (No ID)
-          </h1>
-          <p
-            className={`text-lg mt-2 ${
-              theme ? "text-gray-400" : "text-gray-700"
-            }`}
-          >
-            ID mavjud emas. Umumiy ma'lumotlar ko'rsatilmoqda hozir.
-          </p>
+        <div className="flex justify-center items-center h-full">
+         <NoData/>
+        
         </div>
       </div>
     </>
