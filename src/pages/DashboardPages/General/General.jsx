@@ -11,6 +11,10 @@ const General = () => {
   const { theme } = useContext(Context);
   const [error, setError] = useState(null);
   const [selectedTasks, setSelectedTasks] = useState([]);
+let obj = Object.assign({},selectedTasks)
+console.log(obj);
+
+  
   const { id } = useParams();
 
   useEffect(() => {
@@ -98,7 +102,7 @@ const General = () => {
       if (response.status === 201) {
         message.success("Tasks successfully added!");
         setIsModalOpen(false);
-        setSelectedTasks([]); // Tanlovni tozalash
+        setSelectedTasks([]); 
       }
     } catch (error) {
       console.error(error);
@@ -175,7 +179,7 @@ const General = () => {
                   <Input
                     type="checkbox"
                     className="w-5 h-5 rounded text-blue-500 border-gray-300 focus:ring-blue-500"
-                    onChange={() => handleTaskSelection(item.id)}
+                    onChange={() => handleTaskSelection(item)}
                     checked={selectedTasks.includes(item.id)}
                   />
                 </div>
