@@ -1,22 +1,21 @@
 import React, { useState, useEffect, useRef, useContext } from 'react';
-import { BarChartOutlined, CarFilled, CarOutlined, CarryOutOutlined, SettingOutlined, UserOutlined } from '@ant-design/icons';
+import {UserOutlined } from '@ant-design/icons';
 import { Avatar, Layout, Menu, Dropdown, Space} from 'antd';
 import { Link, useNavigate } from 'react-router-dom';
-import DashboardContent from '../../../components/content/Content'; 
-import { BsCart } from 'react-icons/bs';
+import DashboardContent from '../../components/content/Content'; 
 import { FiMenu } from 'react-icons/fi';
 const { Header, Sider } = Layout;
-import logo from  '../../../assets/images/logo.png'
-import logo1 from  '../../../assets/images/logo1.svg'
-import { VscTasklist } from 'react-icons/vsc';
-import { MdAddTask, MdOutlineAddTask } from 'react-icons/md';
+import logo from  '../../assets/images/logo.png'
+import logo1 from  '../../assets/images/logo1.svg'
+import {MdOutlineAddTask } from 'react-icons/md';
 import { IoMdCheckboxOutline } from 'react-icons/io';
 import { TbUsersPlus } from 'react-icons/tb';
 import { LuLayoutDashboard } from 'react-icons/lu';
 import { HiOutlineUsers } from 'react-icons/hi';
-import axios from '../../../api/index';
+import axios from  '../../api/index'
 import { RiMoonLine, RiSunLine } from 'react-icons/ri';
-import { Context } from '../../../components/darkMode/Context';
+import { Context } from '../../components/darkMode/Context'; 
+import { TfiStatsUp } from 'react-icons/tfi';
 
 function getItem(label, key, icon, onClick) {
   return {
@@ -95,6 +94,14 @@ const Manager = () => {
   };
 
   const items = [
+    getItem(
+      'Statestika',
+      '1',
+      <TfiStatsUp
+      style={{ color: theme ? 'white' : 'black', fontSize: '18px' }}  />,
+      () => { navigate('/dashboard/statestika'); setCollapsed(!collapsed); }
+     
+    ),
     getItem(
       'General',
       '1',
@@ -184,7 +191,7 @@ const Manager = () => {
   className={`${theme ? 'bg-[#1f2937] border-gray-700' : 'bg-[rgb(244,241,236)]  '} border-gray-100 border-r-[1px]`} 
 >
   <div className="flex justify-center items-center">
-    <Link to="/dashboard/managers" className="cursor-pointer">
+    <Link to="/dashboard/statestika" className="cursor-pointer">
     {
       theme ?   <img
       src={logo1}

@@ -1,6 +1,6 @@
 import React, { useContext } from "react";
-import EmployesComponents from "../../components/employes/employes-main";
-import { Context } from "../../components/darkMode/Context";
+import EmployeesComponents from "../../../components/employes/employes-main"; 
+import { Context } from "../../../components/darkMode/Context"; 
 
 const Employees = () => {
   const { theme } = useContext(Context);
@@ -10,7 +10,7 @@ const Employees = () => {
           py-8 px-2 min-h-[100%] transition-all 
           rounded-lg`}
   >
-      <EmployesComponents />
+      <EmployeesComponents />
     </div>
   );
 };
