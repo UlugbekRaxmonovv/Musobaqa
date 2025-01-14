@@ -28,19 +28,21 @@ const TableComponents = ({ reflesh, searchdata }) => {
     type: "",
   });
 
+
+
   const handlePageSizeChange = (value) => {
     setPageSize(value);
-    setPage(1); // Saqlashda birinchi sahifaga qaytish
+    setPage(1);
   };
+
+
 
   const columns = [
     {
       title: <div className="text-center">{"№"}</div>,
       width: 20,
       render: (_, record, index) => (
-        <>
-          <div className="text-center w-full">{index + 1}</div>
-        </>
+        <div className="text-center w-full">{index + 1}</div>
       ),
     },
     {
@@ -109,6 +111,7 @@ const TableComponents = ({ reflesh, searchdata }) => {
   }, [reflesh, searchdata, page, pageSize]);
 
   const handleDelete = (id) => {
+    
     if (!id) {
       notification.error({
         message: "Xatolik",
@@ -126,7 +129,6 @@ const TableComponents = ({ reflesh, searchdata }) => {
       return;
     }
 
-    // Show confirmation modal before deleting
     Modal.confirm({
       title: "Xodimni o'chirishni tasdiqlaysizmi?",
       content: "Ushbu xodimni o'chirishni xohlaysizmi?",
@@ -154,9 +156,6 @@ const TableComponents = ({ reflesh, searchdata }) => {
             description: err.response?.data || "Xatolik yuz berdi.",
           });
         }
-      },
-      onCancel() {
-        console.log("Delete action cancelled");
       },
     });
   };
@@ -215,7 +214,7 @@ const TableComponents = ({ reflesh, searchdata }) => {
   };
 
   return (
-    <div className="">
+    <div>
       <Table
         columns={columns}
         dataSource={data}
@@ -225,33 +224,43 @@ const TableComponents = ({ reflesh, searchdata }) => {
         rowClassName={() => (theme ? "dark-row" : "light-row")}
       />
 
-      <div className="flex items-center justify-between mt-7">
-        <div>
-          <h2>
-            {pageSize * (page - 1) + 1}–{Math.min(pageSize * page, totalOrders)}
-            из {totalOrders}
-          </h2>
-        </div>
-        <Pagination
-          className="flex justify-center items-center mt-2"
-          pageSize={pageSize}
-          total={totalOrders}
-          current={page}
-          onChange={(newPage) => setPage(newPage)}
-        />
+      {searchdata ? (
+        ""
+      ) : (
+        <div className="flex items-center justify-between mt-7">
+          <div>
+            <h2 className={`${theme ? "text-white" : "text-black"} font-bold`}>
+              {pageSize * (page - 1) + 1}–
+              {Math.min(pageSize * page, totalOrders)} из {totalOrders}
+            </h2>
+          </div>
+          <Pagination
+            className={`flex justify-center items-center mt-2 ${
+              theme ? "text-white" : "text-black"
+            }`}
+            pageSize={pageSize}
+            total={totalOrders}
+            current={page}
+            onChange={(newPage) => setPage(newPage)}
+          />
 
-        <div>
-          <select
-            className="outline-none w-[120px] h-[40px] rounded-md"
-            onChange={(e) => handlePageSizeChange(parseInt(e.target.value, 10))}
-            value={pageSize}
-          >
-            <option value="5">5 / стр.</option>
-            <option value="10">10 / стр.</option>
-            <option value="20">20 / стр.</option>
-          </select>
+          <div>
+            <select
+              className={`outline-none w-[120px] h-[40px] rounded-md ${
+                theme ? "bg-gray-800 text-white" : "bg-white text-black"
+              }`}
+              onChange={(e) =>
+                handlePageSizeChange(parseInt(Number(e.target.value)))
+              }
+              value={pageSize}
+            >
+              <option value="5">5 / стр.</option>
+              <option value="10">10 / стр.</option>
+              <option value="20">20 / стр.</option>
+            </select>
+          </div>
         </div>
-      </div>
+      )}
 
       <Modal
         title="Xodimni tahrirlash"

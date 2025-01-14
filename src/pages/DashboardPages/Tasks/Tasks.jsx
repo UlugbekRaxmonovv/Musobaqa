@@ -1,10 +1,10 @@
 import React, { useContext, useEffect, useState } from "react";
 import { Modal, Input, Button, Select, message, Table, Pagination } from "antd";
-import axios from '../../../api/index'
+import axios from "../../../api/index";
 import { CiEdit } from "react-icons/ci";
 import { RiDeleteBin7Line } from "react-icons/ri";
 import { FaPlus } from "react-icons/fa6";
-import { Context } from "../../../components/darkMode/Context"; 
+import { Context } from "../../../components/darkMode/Context";
 
 const { Option } = Select;
 
@@ -19,8 +19,13 @@ const Tasks = () => {
   const [search, setSearch] = useState("");
   const { theme } = useContext(Context);
   const [page, setPage] = useState(1);
-  const [pageSize] = useState(5);
+  const [pageSize, setPageSize] = useState(5);
   const [totalOrders, setTotalOrders] = useState(0);
+  const handlePageSizeChange = (value) => {
+    setPageSize(value);
+    setPage(1);
+  };
+
   useEffect(() => {
     const fetchTasks = async () => {
       const token = localStorage.getItem("x-auth-token");
@@ -30,7 +35,10 @@ const Tasks = () => {
       }
 
       try {
-        const response = await axios.get(`/tasks?name_like=${search}`, {
+        let api = search
+          ? `/tasks?name_like=${search}`
+          : `/tasks?_limit=${pageSize}&_page=${page}`;
+        const response = await axios.get(api, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -44,7 +52,7 @@ const Tasks = () => {
     };
 
     fetchTasks();
-  }, [search]);
+  }, [search, page, pageSize]);
 
   const handleAddTask = () => {
     setModalType("add");
@@ -220,13 +228,44 @@ const Tasks = () => {
         rowClassName={() => (theme ? "dark-row" : "light-row")}
       />
 
-      <Pagination
-        className="flex justify-center items-center mt-2"
-        pageSize={pageSize}
-        total={totalOrders}
-        current={page}
-        onChange={(newPage) => setPage(newPage)}
-      />
+      {search ? (
+        ""
+      ) : (
+        <div className="flex items-center justify-between mt-7">
+          <div>
+            <h2 className={`${theme ? "text-white" : "text-black"} font-bold`}>
+              {pageSize * (page - 1) + 1}–
+              {Math.min(pageSize * page, totalOrders)}
+              из {totalOrders}
+            </h2>
+          </div>
+          <Pagination
+            className={`flex justify-center items-center mt-2 ${
+              theme ? "text-white" : "text-black"
+            }`}
+            pageSize={pageSize}
+            total={totalOrders}
+            current={page}
+            onChange={(newPage) => setPage(newPage)}
+          />
+
+          <div>
+            <select
+              className={`outline-none w-[120px] h-[40px] rounded-md ${
+                theme ? "bg-gray-800 text-white" : "bg-white text-black"
+              }`}
+              onChange={(e) =>
+                handlePageSizeChange(parseInt(e.target.value, 10))
+              }
+              value={pageSize}
+            >
+              <option value="5">5 / стр.</option>
+              <option value="10">10 / стр.</option>
+              <option value="20">20 / стр.</option>
+            </select>
+          </div>
+        </div>
+      )}
 
       <Modal
         title={modalType === "add" ? "Task add" : "Task update"}
