@@ -227,7 +227,7 @@ const General = () => {
               theme ? "text-gray-400" : "text-gray-700"
             }`}
           >
-            ID mavjud emas. Umumiy ma'lumotlar ko'rsatilmoqda.
+            ID mavjud emas. Umumiy ma'lumotlar ko'rsatilmoqda hozir.
           </p>
         </div>
       </div>
