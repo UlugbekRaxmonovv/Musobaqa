@@ -1,15 +1,15 @@
 import { Route, Routes } from "react-router-dom";
-import General from "./pages/General/General";
-import Tasks from "./pages/Tasks/Tasks";
-import Employees from "./pages/Employees/Employees";
-import BlockLanganar from "./pages/BlockLanganar/BlockLanganar";
-import Managers from "./pages/Managers/Managers";
+import General from "./pages/DashboardPages/General/General"; 
+import Tasks from "./pages/DashboardPages/Tasks/Tasks"; 
+import Employees from "./pages/DashboardPages/Employees/Employees"; 
+import BlockLanganar from "./pages/DashboardPages/BlockLanganar/BlockLanganar"; 
+import Managers from "./pages/DashboardPages/Managers/Managers.JSX";   
 import "./App.css";
 import Auth from "./pages/Auth/Auth";
 import Login from "./pages/Login/Login";
 import { Toaster } from "react-hot-toast";
-import Manager from "./pages/DashboardPages/Manager/Manager";
-import Dashboard from "./pages/Dashboard/Dashboard";
+import Manager from './pages/DashboardPages/Manager.jsx'
+import Dashboard from "./pages/DashboardPages/Dashboard/Dashboard"; 
 function App() {
   return (
     <>

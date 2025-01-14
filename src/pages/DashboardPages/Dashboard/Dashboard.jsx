@@ -1,5 +1,5 @@
 import React, { useContext } from 'react'
-import { Context } from '../../components/darkMode/Context';
+import { Context } from '../../../components/darkMode/Context'; 
 
 const Dashboard = () => {
     const { theme } = useContext(Context);
