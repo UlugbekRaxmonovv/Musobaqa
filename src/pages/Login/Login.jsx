@@ -6,6 +6,7 @@ import toast from "react-hot-toast";
 import axios from "../../api/index";
 import { MdEmail } from "react-icons/md";
 import { FaChevronLeft } from "react-icons/fa6";
+import rasm from  '../../assets/images/lo1.png'
 
 const Login = () => {
   const navigate = useNavigate();
@@ -54,13 +55,11 @@ const Login = () => {
           <div className="w-full max-w-[320px] bg-white rounded-[20px] shadow-2xl">
             <div className="flex items-center justify-center border-b border-gray-100 py-4 bg-white rounded-t-[20px]">
               <div className="flex items-center">
-                <div className="w-6 h-6 relative rounded-full overflow-hidden rotate-45">
-                  <div className="absolute inset-0 w-1/2 h-full bg-gradient-to-br from-cyan-400 to-blue-500"></div>
-                  <div className="absolute inset-0 w-1/2 h-full left-1/2 bg-gradient-to-bl from-lime-400 to-green-500"></div>
-                </div>
-                <span className="ml-2 text-xl font-bold text-gray-900">
+             <img width={50} height={50} src={rasm} alt="" />
+                <span className=" text-xl font-bold text-gray-900">
                   Сравни
                 </span>
+                
               </div>
             </div>
 
